@@ -153,7 +153,7 @@ sudo apt install texlive-latex-extra latexmk
 1. Clona el proyecto:
 
 ```bash
-git clone <repo-url> ctf-report-forge
+git clone https://github.com/TomasGutierrezOrozco/ctf-report-forge.git
 cd ctf-report-forge
 ```
 
