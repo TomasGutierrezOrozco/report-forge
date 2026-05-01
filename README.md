@@ -130,17 +130,33 @@ El PDF requiere que `latexmk` y una distribución LaTeX estén instalados en el 
 ## Requisitos
 
 - Python 3.11 o superior.
-- Django 4.2.
+- `pip` para instalar dependencias Python en un entorno virtual.
+- Git para clonar el repositorio.
+- Django 4.2, Jinja2, Pillow, python-slugify y django-htmx, instalados desde `requirements.txt`.
 - SQLite, incluido por defecto con Python.
-- Pillow para validación de imágenes.
-- Jinja2 para plantillas LaTeX.
-- `latexmk` opcional para compilar PDF desde la interfaz.
+- `latexmk` y TeX Live opcionales para compilar PDF desde la interfaz.
 
 Dependencias Python:
 
 ```bash
 pip install -r requirements.txt
 ```
+
+### Paquetes en Arch Linux
+
+Para correr la aplicación web local:
+
+```bash
+sudo pacman -S --needed git python python-pip
+```
+
+Para exportar PDF automáticamente desde la interfaz instala también TeX Live y `latexmk`:
+
+```bash
+sudo pacman -S --needed texlive-latexextra texlive-binextra
+```
+
+En Arch, `texlive-binextra` incluye el binario `latexmk`, y `texlive-latexextra` incluye los paquetes LaTeX usados por las plantillas del reporte. Las dependencias Python de la app se instalan después dentro del entorno virtual con `pip install -r requirements.txt`.
 
 Para PDF automático instala una distribución LaTeX. En Debian/Ubuntu, por ejemplo:
 
