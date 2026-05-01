@@ -1,0 +1,13 @@
+\section{\VAR{ i18n.general_recommendations }}
+
+\BLOCK{ if vulnerabilities }
+    \begin{itemize}
+    \BLOCK{ for vuln in vulnerabilities }
+        \BLOCK{ if vuln.recommendation }
+        \item \textbf{\VAR{ i18n.fix } \VAR{ vuln.title | escape_tex }:} \VAR{ vuln.recommendation | escape_tex }
+        \BLOCK{ endif }
+    \BLOCK{ endfor }
+    \end{itemize}
+\BLOCK{ else }
+    \VAR{ i18n.regularly_update }
+\BLOCK{ endif }

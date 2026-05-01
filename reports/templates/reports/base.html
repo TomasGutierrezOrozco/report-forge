@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CTF Report Forge{% endblock %}</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Custom UI Styles -->
+    <style>
+        :root {
+            --ctf-bg: #090B10;
+            --ctf-bg-secondary: #0F131D;
+            --ctf-primary: #00E5FF;
+            --ctf-primary-glow: rgba(0, 229, 255, 0.4);
+            --ctf-card: rgba(20, 24, 34, 0.6);
+            --ctf-bg-card: rgba(20, 24, 34, 0.92);
+            --ctf-card-border: rgba(255, 255, 255, 0.05);
+            --ctf-text: #E2E8F0;
+            --ctf-text-muted: #94A3B8;
+            --ctf-green: #00ff66;
+        }
+
+        body {
+            background-color: var(--ctf-bg);
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(0, 229, 255, 0.03), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.03), transparent 25%);
+            color: var(--ctf-text);
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: rgba(15, 19, 29, 0.8) !important;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--ctf-card-border);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1020;
+        }
+
+        .navbar-brand {
+            color: #fff !important;
+            font-weight: 700;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .navbar-brand span {
+            color: var(--ctf-primary);
+        }
+
+        .nav-link {
+            color: var(--ctf-text-muted) !important;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: #fff !important;
+        }
+
+        /* Glassmorphism Cards */
+        .card {
+            background: var(--ctf-card);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--ctf-card-border);
+            border-radius: 16px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid var(--ctf-card-border);
+            font-weight: 600;
+            padding: 1rem 1.25rem;
+        }
+        
+        .card-footer {
+            background: rgba(255, 255, 255, 0.01);
+            border-top: 1px solid var(--ctf-card-border);
+        }
+
+        /* Typography & Code Blocks */
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 600;
+            color: #fff;
+            letter-spacing: -0.5px;
+        }
+        
+        .text-primary-custom { color: var(--ctf-primary) !important; }
+
+        pre {
+            background-color: var(--ctf-bg-secondary);
+            border: 1px solid var(--ctf-card-border);
+            border-radius: 8px;
+            padding: 1.25rem;
+            color: #fff;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .font-monospace, code {
+            font-family: "Fira Code", monospace !important;
+            font-size: 0.9em;
+        }
+        
+        code { color: var(--ctf-primary); }
+
+        /* Buttons */
+        .btn {
+            font-weight: 500;
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary-custom {
+            background-color: var(--ctf-primary);
+            color: #000;
+            border: none;
+            box-shadow: 0 0 15px var(--ctf-primary-glow);
+        }
+
+        .btn-primary-custom:hover {
+            background-color: #00b8cc;
+            color: #000;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0, 229, 255, 0.6);
+        }
+
+        .btn-outline-primary-custom {
+            color: var(--ctf-primary);
+            border: 1px solid var(--ctf-primary);
+            background: transparent;
+        }
+
+        .btn-outline-primary-custom:hover {
+            background-color: var(--ctf-primary);
+            color: #000;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px var(--ctf-primary-glow);
+        }
+
+        /* Forms */
+        .form-control, .form-select {
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            transition: all 0.2s;
+        }
+
+        .form-control:focus, .form-select:focus {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-color: var(--ctf-primary);
+            color: #fff;
+            box-shadow: 0 0 0 4px var(--ctf-primary-glow);
+        }
+        
+        .form-label {
+            font-weight: 500;
+            color: var(--ctf-text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Layout & Utils */
+        .main-content {
+            flex: 1;
+            padding-top: 2rem;
+            padding-bottom: 4rem;
+        }
+
+        footer {
+            background: var(--ctf-bg-secondary);
+            border-top: 1px solid var(--ctf-card-border);
+            padding: 1.5rem 0;
+            margin-top: auto;
+        }
+    </style>
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'reports:machine_list' %}">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--ctf-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="me-2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            CTF <span>Report Forge</span>
+        </a>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link px-3" href="{% url 'reports:machine_list' %}">Machines Dashboard</a>
+                </li>
+            </ul>
+            <a href="{% url 'reports:machine_create' %}" class="btn btn-primary-custom d-flex align-items-center gap-2">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                New Machine
+            </a>
+        </div>
+    </div>
+</nav>
+
+<div class="main-content container fade-in">
+    {% if messages %}
+        <div class="mb-4">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show border-0 shadow-sm" role="alert" style="border-radius: 12px; background: rgba(255,255,255,0.05); backdrop-filter: blur(10px); color: #fff;">
+                    <div class="d-flex align-items-center">
+                        {% if message.tags == 'success' %}
+                            <svg class="me-2 text-success" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                        {% else %}
+                            <svg class="me-2 text-{{ message.tags }}" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                        {% endif %}
+                        {{ message }}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    {% block content %}{% endblock %}
+</div>
+
+<footer class="text-center text-muted">
+    <div class="container">
+        <small class="d-flex align-items-center justify-content-center gap-2">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            CTF Report Forge - Local First Documentation Tool
+        </small>
+    </div>
+</footer>
+
+<!-- Empty Modal Container for HTMX -->
+<div id="modal" class="modal fade" tabindex="-1" aria-hidden="true" style="backdrop-filter: blur(5px);">
+    <div id="dialog" class="modal-dialog modal-lg modal-dialog-centered" hx-target="this"></div>
+</div>
+
+<!-- Bootstrap 5 JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- HTMX -->
+<script src="https://unpkg.com/htmx.org@1.9.10"></script>
+
+<script>
+    // Handle HTMX Modal Logic
+    const modal = new bootstrap.Modal(document.getElementById('modal'));
+
+    // When HTMX loads new content into the dialog, show the modal
+    htmx.on('htmx:afterSwap', (e) => {
+        if (e.detail.target.id === 'dialog') {
+            modal.show();
+            initScreenshotInputs(e.detail.target);
+        }
+    });
+
+    // When HTMX sends a 204 No Content (or custom header) to close the modal
+    htmx.on('htmx:beforeSwap', (e) => {
+        if (e.detail.target.id === 'dialog' && !e.detail.xhr.response) {
+            modal.hide();
+            e.detail.shouldSwap = false;
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        initScreenshotInputs(document);
+    });
+
+    function initScreenshotInputs(root) {
+        const fileInputs = root.querySelectorAll('input[type="file"][name="screenshots"]');
+        fileInputs.forEach(function(fileInput) {
+            if (fileInput.dataset.previewReady === 'true') return;
+            fileInput.dataset.previewReady = 'true';
+            fileInput.addEventListener('change', function() {
+                const previewContainer = getPreviewContainer(fileInput);
+                if (previewContainer) renderPreviews(fileInput, previewContainer);
+            });
+        });
+    }
+
+    function getPreviewContainer(fileInput) {
+        const form = fileInput.closest('form') || document;
+        return form.querySelector('#paste-preview-container');
+    }
+
+    // --- Clipboard Paste Magic for Screenshots ---
+    document.addEventListener('paste', function(e) {
+        // Look for the screenshots input
+        const fileInput = document.getElementById('id_screenshots');
+        if (!fileInput) return; // Not on a form with screenshots
+        const previewContainer = getPreviewContainer(fileInput);
+        if (!previewContainer) return;
+        
+        if (e.clipboardData && e.clipboardData.files && e.clipboardData.files.length > 0) {
+            let hasImages = false;
+            // Use DataTransfer to append files
+            const dt = new DataTransfer();
+            
+            // Keep existing files
+            for (let i = 0; i < fileInput.files.length; i++) {
+                dt.items.add(fileInput.files[i]);
+            }
+            
+            // Add new pasted images
+            for (let i = 0; i < e.clipboardData.files.length; i++) {
+                const file = e.clipboardData.files[i];
+                if (file.type.startsWith('image/')) {
+                    // Create a proper file object with a default name if it's just 'image.png'
+                    let fileName = file.name;
+                    if (fileName === 'image.png' || fileName === 'image.jpg') {
+                        fileName = `Pasted_Screenshot_${Date.now()}.${file.type.split('/')[1]}`;
+                        const newFile = new File([file], fileName, { type: file.type });
+                        dt.items.add(newFile);
+                    } else {
+                        dt.items.add(file);
+                    }
+                    hasImages = true;
+                }
+            }
+            
+            if (hasImages) {
+                fileInput.files = dt.files;
+                renderPreviews(fileInput, previewContainer);
+                e.preventDefault();
+            }
+        }
+    });
+
+    function renderPreviews(fileInput, previewContainer) {
+        previewContainer.innerHTML = '';
+        for (let i = 0; i < fileInput.files.length; i++) {
+            (function(index) {
+                const file = fileInput.files[index];
+                const reader = new FileReader();
+                reader.onload = function(ev) {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'position-relative';
+                    wrapper.style.cssText = 'width:80px;height:80px;flex-shrink:0;';
+
+                    const img = document.createElement('img');
+                    img.src = ev.target.result;
+                    img.className = 'img-thumbnail w-100 h-100';
+                    img.style.objectFit = 'cover';
+
+                    const btn = document.createElement('button');
+                    btn.type = 'button';
+                    btn.innerHTML = '&times;';
+                    btn.title = 'Remove';
+                    btn.style.cssText = `
+                        position:absolute;top:-6px;right:-6px;
+                        width:20px;height:20px;border-radius:50%;
+                        background:#ff4d4d;color:#fff;border:none;
+                        font-size:14px;line-height:1;cursor:pointer;
+                        display:flex;align-items:center;justify-content:center;
+                        box-shadow:0 2px 6px rgba(0,0,0,0.4);
+                        padding:0;
+                    `;
+                    btn.addEventListener('click', function() {
+                        const dt2 = new DataTransfer();
+                        for (let j = 0; j < fileInput.files.length; j++) {
+                            if (j !== index) dt2.items.add(fileInput.files[j]);
+                        }
+                        fileInput.files = dt2.files;
+                        renderPreviews(fileInput, previewContainer);
+                    });
+
+                    wrapper.appendChild(img);
+                    wrapper.appendChild(btn);
+                    previewContainer.appendChild(wrapper);
+                };
+                reader.readAsDataURL(file);
+            })(i);
+        }
+    }
+</script>
+
+{% block extra_js %}{% endblock %}
+</body>
+</html>

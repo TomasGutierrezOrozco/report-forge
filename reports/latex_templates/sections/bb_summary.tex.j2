@@ -1,0 +1,23 @@
+\section{\VAR{ i18n.bb_summary }}
+
+\BLOCK{ if machine.description }
+\VAR{ machine.description | escape_tex }
+\BLOCK{ else }
+\textit{\VAR{ i18n.no_description }}
+\BLOCK{ endif }
+
+\vspace{0.5cm}
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{|l|l|}
+\hline
+\textbf{\VAR{ i18n.name }}         & \VAR{ machine.name | escape_tex } \\ \hline
+\BLOCK{ if machine.client_name }
+\textbf{\VAR{ i18n.client }}       & \VAR{ machine.client_name | escape_tex } \\ \hline
+\BLOCK{ endif }
+\textbf{\VAR{ i18n.platform }}     & \VAR{ machine.platform | escape_tex } \\ \hline
+\textbf{\VAR{ i18n.target_ip }}    & \VAR{ machine.target_ip | escape_tex } \\ \hline
+\textbf{\VAR{ i18n.author_label }} & \VAR{ machine.author | escape_tex } \\ \hline
+\end{tabular}
+\end{table}

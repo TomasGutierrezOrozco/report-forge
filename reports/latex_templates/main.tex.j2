@@ -1,0 +1,125 @@
+\documentclass[12pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage[hidelinks]{hyperref}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{fancyhdr}
+
+\geometry{
+    a4paper,
+    left=2.5cm,
+    right=2.5cm,
+    top=2.5cm,
+    bottom=2.5cm,
+}
+
+% Colors for code blocks
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}
+
+% Header and Footer
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\VAR{ i18n.ctf_writeup }}
+\fancyhead[R]{\VAR{ machine.name | escape_tex }}
+\fancyfoot[C]{\thepage}
+
+\title{\VAR{ i18n.writeup_title_prefix } - \VAR{ machine.name | escape_tex }}
+\author{\VAR{ machine.author | default('Unknown') | escape_tex }}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\thispagestyle{empty}
+\vspace{5cm}
+\begin{center}
+    \textbf{\Large \VAR{ i18n.executive_summary }}\\
+    \vspace{0.5cm}
+    \VAR{ i18n.document_contains } \VAR{ machine.name | escape_tex }. \\
+    \VAR{ i18n.platform }: \VAR{ machine.platform | escape_tex } \\
+    \VAR{ i18n.difficulty }: \VAR{ machine.difficulty | escape_tex }
+\end{center}
+
+\newpage
+\VAR{ i18n.table_of_contents }
+\newpage
+
+\BLOCK{ include 'sections/overview.tex.j2' }
+
+\BLOCK{ if has_phase_content.get('reconnaissance') }
+\newpage
+\BLOCK{ include 'sections/reconnaissance.tex.j2' }
+\BLOCK{ endif }
+
+\BLOCK{ if has_vulnerability_section }
+\newpage
+\BLOCK{ include 'sections/vulnerabilities.tex.j2' }
+\BLOCK{ endif }
+
+\BLOCK{ if has_exploitation_section }
+\newpage
+\BLOCK{ include 'sections/exploitation.tex.j2' }
+\BLOCK{ endif }
+
+\BLOCK{ if has_phase_content.get('internal_reconnaissance') }
+\newpage
+\BLOCK{ include 'sections/internal_recon.tex.j2' }
+\BLOCK{ endif }
+
+\BLOCK{ if has_phase_content.get('user_movement') }
+\newpage
+\BLOCK{ include 'sections/user_movement.tex.j2' }
+\BLOCK{ endif }
+
+\BLOCK{ if has_phase_content.get('privilege_escalation') }
+\newpage
+\BLOCK{ include 'sections/privilege_escalation.tex.j2' }
+\BLOCK{ endif }
+
+\BLOCK{ if has_flags }
+\newpage
+\BLOCK{ include 'sections/flags.tex.j2' }
+\BLOCK{ endif }
+
+\BLOCK{ if has_phase_content.get('notes') }
+\newpage
+\BLOCK{ include 'sections/notes.tex.j2' }
+\BLOCK{ endif }
+
+\BLOCK{ if vulnerabilities or has_vulnerability_recommendations }
+\newpage
+\BLOCK{ include 'sections/conclusions.tex.j2' }
+\BLOCK{ endif }
+
+\end{document}

@@ -1,0 +1,20 @@
+\section{\VAR{ i18n.pt_findings }}
+
+\BLOCK{ if vulnerabilities }
+    \begin{longtable}{|p{5cm}|p{2.5cm}|p{2.5cm}|p{4.5cm}|}
+    \hline
+    \textbf{\VAR{ i18n.name }} & \textbf{\VAR{ i18n.severity }} & \textbf{\VAR{ i18n.type }} & \textbf{\VAR{ i18n.affected_service }} \\
+    \hline
+    \endfirsthead
+    \hline
+    \textbf{\VAR{ i18n.name }} & \textbf{\VAR{ i18n.severity }} & \textbf{\VAR{ i18n.type }} & \textbf{\VAR{ i18n.affected_service }} \\
+    \hline
+    \endhead
+    \BLOCK{ for vuln in vulnerabilities }
+    \VAR{ vuln.title | escape_tex } & \VAR{ vuln.severity | escape_tex } & \VAR{ vuln.vulnerability_type | escape_tex } & \VAR{ vuln.affected_service | escape_tex } \\
+    \hline
+    \BLOCK{ endfor }
+    \end{longtable}
+\BLOCK{ else }
+    \textit{\VAR{ i18n.no_vuln }}
+\BLOCK{ endif }

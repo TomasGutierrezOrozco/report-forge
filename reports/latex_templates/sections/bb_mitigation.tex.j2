@@ -1,0 +1,13 @@
+\section{\VAR{ i18n.bb_mitigation }}
+
+\BLOCK{ if vulnerabilities }
+    \begin{itemize}
+    \BLOCK{ for vuln in vulnerabilities }
+        \BLOCK{ if vuln.recommendation }
+        \item \textbf{\VAR{ vuln.title | escape_tex }:} \VAR{ vuln.recommendation | escape_tex }
+        \BLOCK{ endif }
+    \BLOCK{ endfor }
+    \end{itemize}
+\BLOCK{ else }
+    \textit{\VAR{ i18n.no_vuln }}
+\BLOCK{ endif }

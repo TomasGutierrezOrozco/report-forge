@@ -1,0 +1,31 @@
+\section{\VAR{ i18n.flags }}
+
+\BLOCK{ if flags }
+    \begin{itemize}
+    \BLOCK{ for flag in flags }
+        \item \textbf{\VAR{ flag.flag_type | escape_tex }}: 
+        \BLOCK{ if flag.censored }
+            \texttt{\VAR{ i18n.censored }}
+        \BLOCK{ else }
+            \texttt{\VAR{ flag.value | escape_tex }}
+        \BLOCK{ endif }
+        
+        \BLOCK{ if flag.location } (\VAR{ i18n.location }: \VAR{ flag.location | escape_tex })\BLOCK{ endif }
+        \BLOCK{ if flag.obtained_as_user } [\VAR{ i18n.user }: \VAR{ flag.obtained_as_user | escape_tex }]\BLOCK{ endif }
+        \BLOCK{ if flag.phase } [Phase: \VAR{ flag.get_phase_display() | escape_tex }]\BLOCK{ endif }
+        
+        \BLOCK{ if flag.found_commands }
+            \\ \textit{Command(s):}
+            \begin{verbatim}
+\VAR{ flag.found_commands }
+            \end{verbatim}
+        \BLOCK{ endif }
+        
+        \BLOCK{ if flag.notes }
+            \\ \textit{\VAR{ i18n.notes }:} \VAR{ flag.notes | escape_tex }
+        \BLOCK{ endif }
+    \BLOCK{ endfor }
+    \end{itemize}
+\BLOCK{ else }
+    \VAR{ i18n.no_flags }
+\BLOCK{ endif }

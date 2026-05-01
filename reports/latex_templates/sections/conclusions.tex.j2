@@ -1,0 +1,27 @@
+\section{\VAR{ i18n.conclusions }}
+
+The machine \VAR{ machine.name | escape_tex } \VAR{ i18n.was_successfully_compromised }
+
+\subsection{\VAR{ i18n.summary_of_vulnerabilities }}
+\BLOCK{ if vulnerabilities }
+    \begin{itemize}
+    \BLOCK{ for vuln in vulnerabilities }
+        \item \VAR{ vuln.title | escape_tex } (\VAR{ vuln.severity | escape_tex })
+    \BLOCK{ endfor }
+    \end{itemize}
+\BLOCK{ else }
+    \VAR{ i18n.no_specific_vulnerabilities }
+\BLOCK{ endif }
+
+\subsection{\VAR{ i18n.general_recommendations }}
+\BLOCK{ if vulnerabilities }
+    \begin{itemize}
+    \BLOCK{ for vuln in vulnerabilities }
+        \BLOCK{ if vuln.recommendation }
+            \item \textbf{\VAR{ i18n.fix } \VAR{ vuln.title | escape_tex }}: \VAR{ vuln.recommendation | escape_tex }
+        \BLOCK{ endif }
+    \BLOCK{ endfor }
+    \end{itemize}
+\BLOCK{ else }
+    \VAR{ i18n.regularly_update }
+\BLOCK{ endif }

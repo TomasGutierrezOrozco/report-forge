@@ -1,0 +1,19 @@
+\section{\VAR{ i18n.general_information }}
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{|l|l|}
+\hline
+\textbf{\VAR{ i18n.name }} & \VAR{ machine.name | escape_tex } \\ \hline
+\textbf{\VAR{ i18n.platform }} & \VAR{ machine.platform | escape_tex } \\ \hline
+\textbf{\VAR{ i18n.difficulty }} & \VAR{ machine.difficulty | escape_tex } \\ \hline
+\textbf{\VAR{ i18n.operating_system }} & \VAR{ machine.operating_system | escape_tex } \\ \hline
+\textbf{\VAR{ i18n.target_ip }} & \VAR{ machine.target_ip | escape_tex } \\ \hline
+\end{tabular}
+\end{table}
+
+\BLOCK{ if machine.description }
+\subsection{\VAR{ i18n.description }}
+\VAR{ machine.description | escape_tex }
+\BLOCK{ endif }

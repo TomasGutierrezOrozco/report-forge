@@ -1,0 +1,40 @@
+# Database
+*.sqlite3
+db.sqlite3
+
+# Media and exports
+media/
+exports/
+reports_output/
+
+# LaTeX artifacts
+*.pdf
+*.aux
+*.log
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.bbl
+*.blg
+*.lof
+*.lot
+*.idx
+*.ind
+*.ilg
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Environment
+.env
+.env.local
+
+# IDE / OS
+.DS_Store
+.vscode/
+.idea/

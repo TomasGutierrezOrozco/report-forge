@@ -1,0 +1,38 @@
+\section{\VAR{ i18n.bb_finding }}
+
+\BLOCK{ if vulnerabilities }
+    \BLOCK{ for vuln in vulnerabilities }
+        \subsection{\VAR{ vuln.title | escape_tex }}
+        
+        \begin{itemize}
+            \item \textbf{\VAR{ i18n.severity }:} \VAR{ vuln.severity | escape_tex }
+            \item \textbf{\VAR{ i18n.type }:} \VAR{ vuln.vulnerability_type | escape_tex }
+            \BLOCK{ if vuln.cve }\item \textbf{\VAR{ i18n.cve }:} \VAR{ vuln.cve | escape_tex }\BLOCK{ endif }
+            \BLOCK{ if vuln.affected_service }\item \textbf{\VAR{ i18n.affected_service }:} \VAR{ vuln.affected_service | escape_tex }\BLOCK{ endif }
+            \BLOCK{ if vuln.affected_port }\item \textbf{\VAR{ i18n.port }:} \VAR{ vuln.affected_port | escape_tex }\BLOCK{ endif }
+        \end{itemize}
+
+        \BLOCK{ if vuln.how_identified }
+        \textbf{\VAR{ i18n.how_identified }:}\\
+        \VAR{ vuln.how_identified | escape_tex }\\
+        \BLOCK{ endif }
+
+        \BLOCK{ if vuln.evidence }
+        \textbf{\VAR{ i18n.bb_proof }:}
+        \begin{lstlisting}
+\VAR{ vuln.evidence }
+        \end{lstlisting}
+        \BLOCK{ endif }
+        
+        \BLOCK{ for screenshot in vuln.screenshots.all() }
+            \begin{figure}[H]
+                \centering
+                \includegraphics[width=0.90\textwidth]{\VAR{ screenshot_paths[screenshot.id] }}
+                \caption{\VAR{ screenshot.caption | default(screenshot.title) | escape_tex }}
+            \end{figure}
+        \BLOCK{ endfor }
+
+    \BLOCK{ endfor }
+\BLOCK{ else }
+    \textit{\VAR{ i18n.no_vuln }}
+\BLOCK{ endif }

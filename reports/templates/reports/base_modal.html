@@ -1,0 +1,9 @@
+<div class="modal-content border-0" style="background: var(--ctf-bg-card); box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
+    <div class="modal-header border-bottom" style="background: rgba(255,255,255,0.02); border-color: rgba(255,255,255,0.05) !important;">
+        <h5 class="modal-title text-white fw-bold">{% block title %}{% endblock %}</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body p-4" style="max-height: 70vh; overflow-y: auto;">
+        {% block content %}{% endblock %}
+    </div>
+</div>

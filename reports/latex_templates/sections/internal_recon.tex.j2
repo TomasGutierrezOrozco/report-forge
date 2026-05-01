@@ -1,0 +1,37 @@
+\section{\VAR{ i18n.internal_recon }}
+
+\BLOCK{ set evidences = evidences_by_phase.get('internal_reconnaissance', []) }
+\BLOCK{ if evidences }
+    \BLOCK{ for evidence in evidences }
+        \subsection{\VAR{ evidence.title | escape_tex }}
+        
+        \BLOCK{ if evidence.explanation }
+            \textbf{\VAR{ i18n.explanation }:}\\
+            \VAR{ evidence.explanation | escape_tex }\\
+        \BLOCK{ endif }
+        
+        \BLOCK{ if evidence.command }
+            \textbf{\VAR{ i18n.command_used }:}
+            \begin{lstlisting}[language=bash]
+\VAR{ evidence.command }
+            \end{lstlisting}
+        \BLOCK{ endif }
+        
+        \BLOCK{ if evidence.output }
+            \textbf{\VAR{ i18n.output }:}
+            \begin{lstlisting}
+\VAR{ evidence.output }
+            \end{lstlisting}
+        \BLOCK{ endif }
+        
+        \BLOCK{ for screenshot in evidence.screenshots.all() }
+            \begin{figure}[H]
+                \centering
+                \includegraphics[width=0.90\textwidth]{\VAR{ screenshot_paths[screenshot.id] }}
+                \caption{\VAR{ screenshot.caption | default(screenshot.title) | escape_tex }}
+            \end{figure}
+        \BLOCK{ endfor }
+    \BLOCK{ endfor }
+\BLOCK{ else }
+    \VAR{ i18n.no_internal_recon }
+\BLOCK{ endif }

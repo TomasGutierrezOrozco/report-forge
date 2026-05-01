@@ -1,0 +1,12 @@
+\section{\VAR{ i18n.pt_scope }}
+
+\BLOCK{ if machine.scope }
+\VAR{ machine.scope | escape_tex }
+\BLOCK{ else }
+\textit{\VAR{ i18n.pt_no_scope }}
+\BLOCK{ endif }
+
+\BLOCK{ if machine.target_ip }
+\vspace{0.5cm}
+\textbf{\VAR{ i18n.target_ip }:} \texttt{\VAR{ machine.target_ip | escape_tex }}
+\BLOCK{ endif }
