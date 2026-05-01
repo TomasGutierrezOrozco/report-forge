@@ -1,4 +1,4 @@
-# CTF Report Forge
+# Report Forge
 
 CTF Report Forge es una herramienta web **local-first** para documentar máquinas de CTF, laboratorios de pentesting y hallazgos técnicos sin sacar tus datos de tu equipo. Está pensada para estudiantes, pentesters, jugadores de HackTheBox/TryHackMe/VulnHub/DockerLabs y personas que quieren convertir notas técnicas en reportes exportables.
 
