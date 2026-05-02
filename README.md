@@ -192,7 +192,7 @@ pip install -r requirements.txt
 python3 report-forge
 ```
 
-Este comando usa `.venv/bin/python` automáticamente si existe, aplica migraciones y arranca el servidor en `127.0.0.1:8000`. Si prefieres hacerlo manualmente:
+También puedes ejecutar `python3 report_forge` si prefieres usar el paquete Django directamente. Ambos comandos usan `.venv/bin/python` automáticamente si existe, aplican migraciones y arrancan el servidor en `127.0.0.1:8000`. Si prefieres hacerlo manualmente:
 
 ```bash
 python manage.py migrate
