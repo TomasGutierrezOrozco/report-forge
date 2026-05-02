@@ -1,6 +1,6 @@
 # Report Forge
 
-CTF Report Forge es una herramienta web **local-first** para documentar máquinas de CTF, laboratorios de pentesting y hallazgos técnicos sin sacar tus datos de tu equipo. Está pensada para estudiantes, pentesters, jugadores de HackTheBox/TryHackMe/VulnHub/DockerLabs y personas que quieren convertir notas técnicas en reportes exportables.
+Report Forge es una herramienta web **local-first** para documentar máquinas de CTF, laboratorios de pentesting y hallazgos técnicos sin sacar tus datos de tu equipo. Está pensada para estudiantes, pentesters, jugadores de HackTheBox/TryHackMe/VulnHub/DockerLabs y personas que quieren convertir notas técnicas en reportes exportables.
 
 > Estado actual: **beta local**. La app ya es usable para documentar y exportar reportes, pero todavía no debe tratarse como una plataforma multiusuario ni como una aplicación lista para internet.
 
@@ -308,4 +308,4 @@ python -m compileall reports report_forge
 
 ## Seguridad y Uso Responsable
 
-Usa CTF Report Forge solo con sistemas propios, laboratorios, CTFs o entornos donde tengas permiso explícito. La herramienta ayuda a documentar trabajo técnico; no autoriza ni justifica actividad fuera de alcance.
+Usa Report Forge solo con sistemas propios, laboratorios, CTFs o entornos donde tengas permiso explícito. La herramienta ayuda a documentar trabajo técnico; no autoriza ni justifica actividad fuera de alcance.

@@ -1,1 +1,1 @@
-# CTF Report Forge - Django Project
+# Report Forge - Django Project
