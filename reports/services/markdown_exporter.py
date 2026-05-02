@@ -52,10 +52,12 @@ def _write_screenshots(lines, screenshots, screenshot_paths):
 
 def build_markdown_zip(machine):
     """
-    Builds a ZIP containing report.md plus copied screenshot assets.
+    Builds a ZIP containing the language-suffixed report plus copied screenshot assets.
     Returns (zip_bytes, filename).
     """
     machine_slug = slugify(machine.name) or f"machine-{machine.pk}"
+    language_suffix = "es" if machine.report_language == "es" else "en"
+    report_filename = f"{machine_slug}_{language_suffix}.md"
     i18n = get_i18n(machine.report_language)
 
     with TemporaryDirectory() as tmp_dir:
@@ -193,7 +195,7 @@ def build_markdown_zip(machine):
                 _code_block(lines, evidence.output)
                 _write_screenshots(lines, evidence.screenshots.all(), screenshot_paths)
 
-        report_path = os.path.join(tmp_dir, "report.md")
+        report_path = os.path.join(tmp_dir, report_filename)
         with open(report_path, "w", encoding="utf-8") as report:
             report.write("\n".join(lines).rstrip() + "\n")
 
@@ -205,4 +207,4 @@ def build_markdown_zip(machine):
                     archive.write(full_path, os.path.relpath(full_path, tmp_dir))
         buffer.seek(0)
 
-    return buffer.getvalue(), f"{machine_slug}-markdown.zip"
+    return buffer.getvalue(), f"{machine_slug}_{language_suffix}-markdown.zip"
