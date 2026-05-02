@@ -97,7 +97,28 @@ TRANSLATIONS = {
         'pt_executive': 'Executive Summary',
         'pt_scope': 'Scope of Work',
         'pt_findings': 'Findings Summary',
-        'pt_no_scope': 'No scope defined.'
+        'pt_no_scope': 'No scope defined.',
+
+        # Markdown and LaTeX exports
+        'overview': 'Overview',
+        'vulnerability': 'Vulnerability',
+        'affected': 'Affected',
+        'exploit': 'Exploit',
+        'outcome': 'Outcome',
+        'phase': 'Phase',
+        'evidence': 'Evidence',
+        'additional_evidence': 'Additional Evidence',
+        'additional_exploitation_evidence': 'Additional Exploitation Evidence',
+        'target_vulnerability': 'Target Vulnerability',
+        'commands': 'Command(s)',
+        'the_machine': 'The machine',
+        'reconnaissance_phase': 'Reconnaissance',
+        'vulnerability_identification_phase': 'Vulnerability Identification',
+        'exploitation_phase': 'Exploitation',
+        'internal_reconnaissance_phase': 'Internal Reconnaissance',
+        'user_movement_phase': 'User Movement',
+        'privilege_escalation_phase': 'Privilege Escalation',
+        'notes_phase': 'Notes'
     },
     'es': {
         # main.tex.j2
@@ -197,7 +218,28 @@ TRANSLATIONS = {
         'pt_executive': 'Resumen Ejecutivo',
         'pt_scope': 'Alcance del Trabajo',
         'pt_findings': 'Resumen de Hallazgos',
-        'pt_no_scope': 'No se definió un alcance.'
+        'pt_no_scope': 'No se definió un alcance.',
+
+        # Markdown and LaTeX exports
+        'overview': 'Resumen',
+        'vulnerability': 'Vulnerabilidad',
+        'affected': 'Afectado',
+        'exploit': 'Exploit',
+        'outcome': 'Resultado',
+        'phase': 'Fase',
+        'evidence': 'Evidencia',
+        'additional_evidence': 'Evidencia adicional',
+        'additional_exploitation_evidence': 'Evidencia adicional de explotación',
+        'target_vulnerability': 'Vulnerabilidad objetivo',
+        'commands': 'Comando(s)',
+        'the_machine': 'La máquina',
+        'reconnaissance_phase': 'Reconocimiento',
+        'vulnerability_identification_phase': 'Identificación de Vulnerabilidades',
+        'exploitation_phase': 'Explotación',
+        'internal_reconnaissance_phase': 'Reconocimiento Interno',
+        'user_movement_phase': 'Movimiento Lateral / Salto de Usuario',
+        'privilege_escalation_phase': 'Escalada de Privilegios',
+        'notes_phase': 'Notas'
     }
 }
 

@@ -1,6 +1,6 @@
 import os
 import django
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ctf_report_forge.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'report_forge.settings')
 django.setup()
 
 from django.core.files.uploadedfile import SimpleUploadedFile

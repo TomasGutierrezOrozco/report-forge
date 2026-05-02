@@ -186,19 +186,20 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-4. Aplica migraciones:
+4. Levanta la app con un solo comando:
+
+```bash
+python3 report-forge
+```
+
+Este comando usa `.venv/bin/python` automáticamente si existe, aplica migraciones y arranca el servidor en `127.0.0.1:8000`. Si prefieres hacerlo manualmente:
 
 ```bash
 python manage.py migrate
-```
-
-5. Levanta el servidor local:
-
-```bash
 python manage.py runserver 127.0.0.1:8000
 ```
 
-6. Abre la app:
+5. Abre la app:
 
 ```text
 http://127.0.0.1:8000/
@@ -223,7 +224,7 @@ ctf-report-forge/
 ├── manage.py
 ├── requirements.txt
 ├── README.md
-├── ctf_report_forge/        # Configuración Django
+├── report_forge/            # Configuración Django
 ├── reports/                 # App principal
 │   ├── models.py            # Modelos de máquinas, evidencias, flags, etc.
 │   ├── forms.py             # Formularios
@@ -275,13 +276,14 @@ assets/screenshots/<imagenes>
 ```
 
 Esto es útil para mover el reporte a repositorios privados, wikis internas o editores Markdown.
+Las capturas aparecen junto a su evidencia, vulnerabilidad o exploit asociado; el Markdown no añade una galería final.
 
 ## Verificación Rápida
 
 ```bash
 python manage.py check
 python manage.py makemigrations --check --dry-run
-python -m compileall reports ctf_report_forge
+python -m compileall reports report_forge
 ```
 
 ## Limitaciones Conocidas de la Beta

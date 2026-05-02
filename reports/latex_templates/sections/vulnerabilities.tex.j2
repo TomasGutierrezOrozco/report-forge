@@ -17,7 +17,7 @@
         \BLOCK{ endif }
         
         \BLOCK{ if vuln.evidence }
-            \textbf{Evidence:}
+            \textbf{\VAR{ i18n.evidence }:}
             \begin{lstlisting}
 \VAR{ vuln.evidence }
             \end{lstlisting}
@@ -46,7 +46,7 @@
 
 \BLOCK{ set evidences = evidences_by_phase.get('vulnerability_identification', []) }
 \BLOCK{ if evidences }
-    \subsection{Additional Evidence}
+    \subsection{\VAR{ i18n.additional_evidence }}
     \BLOCK{ for evidence in evidences }
         \subsubsection{\VAR{ evidence.title | escape_tex }}
         

@@ -64,6 +64,10 @@ def render_machine_to_latex(machine):
     
     # Prepare context
     i18n_strings = get_i18n(machine.report_language)
+    phase_labels = {
+        phase_id: i18n_strings.get(f"{phase_id}_phase", phase_name)
+        for phase_id, phase_name in Evidence.Phase.choices
+    }
     context = {
         'machine': machine,
         'evidences_by_phase': evidences_by_phase,
@@ -72,6 +76,7 @@ def render_machine_to_latex(machine):
         'flags': list(machine.flags.all()),
         'screenshot_paths': screenshot_paths,  # map screenshot ID -> relative path
         'i18n': i18n_strings,
+        'phase_labels': phase_labels,
         'has_phase_content': has_phase_content,
         'has_vulnerability_section': has_vulnerability_section,
         'has_exploitation_section': has_exploitation_section,

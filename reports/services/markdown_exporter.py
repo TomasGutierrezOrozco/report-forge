@@ -6,6 +6,7 @@ from tempfile import TemporaryDirectory
 from slugify import slugify
 
 from reports.models import Evidence
+from reports.services.i18n import get_i18n
 
 
 def _safe_filename(name):
@@ -18,6 +19,14 @@ def _write_line(lines, text=""):
     lines.append(text)
 
 
+def _section(lines, title):
+    if lines:
+        _write_line(lines, "___")
+        _write_line(lines)
+    _write_line(lines, f"## {title}")
+    _write_line(lines)
+
+
 def _code_block(lines, value, language=""):
     if not value:
         return
@@ -28,12 +37,26 @@ def _code_block(lines, value, language=""):
     _write_line(lines)
 
 
+def _phase_title(i18n, phase_id):
+    return i18n.get(f"{phase_id}_phase", phase_id.replace("_", " ").title())
+
+
+def _write_screenshots(lines, screenshots, screenshot_paths):
+    for screenshot in screenshots:
+        path = screenshot_paths.get(screenshot.pk)
+        if path:
+            alt = screenshot.caption or screenshot.title or screenshot.image.name
+            _write_line(lines, f"![{alt}]({path})")
+            _write_line(lines)
+
+
 def build_markdown_zip(machine):
     """
     Builds a ZIP containing report.md plus copied screenshot assets.
     Returns (zip_bytes, filename).
     """
     machine_slug = slugify(machine.name) or f"machine-{machine.pk}"
+    i18n = get_i18n(machine.report_language)
 
     with TemporaryDirectory() as tmp_dir:
         assets_dir = os.path.join(tmp_dir, "assets", "screenshots")
@@ -61,22 +84,21 @@ def build_markdown_zip(machine):
         lines = []
         _write_line(lines, f"# {machine.name}")
         _write_line(lines)
-        _write_line(lines, f"- Platform: {machine.platform}")
-        _write_line(lines, f"- Difficulty: {machine.difficulty}")
-        _write_line(lines, f"- OS: {machine.operating_system}")
+        _write_line(lines, f"- {i18n['platform']}: {machine.platform}")
+        _write_line(lines, f"- {i18n['difficulty']}: {machine.difficulty}")
+        _write_line(lines, f"- {i18n['operating_system']}: {machine.operating_system}")
         if machine.target_ip:
-            _write_line(lines, f"- Target IP: `{machine.target_ip}`")
+            _write_line(lines, f"- {i18n['target_ip']}: `{machine.target_ip}`")
         if machine.author:
-            _write_line(lines, f"- Author: {machine.author}")
+            _write_line(lines, f"- {i18n['author_label']}: {machine.author}")
         _write_line(lines)
 
         if machine.description:
-            _write_line(lines, "## Overview")
-            _write_line(lines)
+            _section(lines, i18n['overview'])
             _write_line(lines, machine.description.strip())
             _write_line(lines)
 
-        for phase_id, phase_name in Evidence.Phase.choices:
+        for phase_id, _ in Evidence.Phase.choices:
             if phase_id == Evidence.Phase.NOTES:
                 continue
             evidences = list(machine.evidences.filter(phase=phase_id))
@@ -85,35 +107,35 @@ def build_markdown_zip(machine):
             if not evidences and not phase_vulns and not phase_exploits:
                 continue
 
-            _write_line(lines, f"## {phase_name}")
-            _write_line(lines)
+            _section(lines, _phase_title(i18n, phase_id))
 
             for vuln in phase_vulns:
-                _write_line(lines, f"### Vulnerability: {vuln.title}")
+                _write_line(lines, f"### {i18n['vulnerability']}: {vuln.title}")
                 _write_line(lines)
-                _write_line(lines, f"- Severity: {vuln.severity}")
-                _write_line(lines, f"- Type: {vuln.vulnerability_type}")
+                _write_line(lines, f"- {i18n['severity']}: {vuln.severity}")
+                _write_line(lines, f"- {i18n['type']}: {vuln.vulnerability_type}")
                 if vuln.cve:
                     _write_line(lines, f"- CVE: `{vuln.cve}`")
                 if vuln.affected_service or vuln.affected_port:
-                    _write_line(lines, f"- Affected: {vuln.affected_service} {vuln.affected_port}".strip())
+                    _write_line(lines, f"- {i18n['affected']}: {vuln.affected_service} {vuln.affected_port}".strip())
                 _write_line(lines)
                 if vuln.how_identified:
                     _write_line(lines, vuln.how_identified.strip())
                     _write_line(lines)
                 _code_block(lines, vuln.evidence)
                 if vuln.impact:
-                    _write_line(lines, f"Impact: {vuln.impact.strip()}")
+                    _write_line(lines, f"{i18n['impact']}: {vuln.impact.strip()}")
                     _write_line(lines)
                 if vuln.recommendation:
-                    _write_line(lines, f"Recommendation: {vuln.recommendation.strip()}")
+                    _write_line(lines, f"{i18n['recommendation']}: {vuln.recommendation.strip()}")
                     _write_line(lines)
+                _write_screenshots(lines, vuln.screenshots.all(), screenshot_paths)
 
             for exploit in phase_exploits:
-                _write_line(lines, f"### Exploit: {exploit.name}")
+                _write_line(lines, f"### {i18n['exploit']}: {exploit.name}")
                 _write_line(lines)
-                _write_line(lines, f"- Type: {exploit.exploit_type}")
-                _write_line(lines, f"- Objective: {exploit.objective}")
+                _write_line(lines, f"- {i18n['type']}: {exploit.exploit_type}")
+                _write_line(lines, f"- {i18n['objective']}: {exploit.objective}")
                 if exploit.cve:
                     _write_line(lines, f"- CVE: `{exploit.cve}`")
                 if exploit.url:
@@ -125,8 +147,9 @@ def build_markdown_zip(machine):
                 _code_block(lines, exploit.command_used, "bash")
                 _code_block(lines, exploit.output)
                 if exploit.result:
-                    _write_line(lines, f"Outcome: {exploit.result.strip()}")
+                    _write_line(lines, f"{i18n['outcome']}: {exploit.result.strip()}")
                     _write_line(lines)
+                _write_screenshots(lines, exploit.screenshots.all(), screenshot_paths)
 
             for evidence in evidences:
                 _write_line(lines, f"### {evidence.title}")
@@ -136,27 +159,21 @@ def build_markdown_zip(machine):
                     _write_line(lines)
                 _code_block(lines, evidence.command, "bash")
                 _code_block(lines, evidence.output)
-                for screenshot in evidence.screenshots.all():
-                    path = screenshot_paths.get(screenshot.pk)
-                    if path:
-                        alt = screenshot.caption or screenshot.title or screenshot.image.name
-                        _write_line(lines, f"![{alt}]({path})")
-                        _write_line(lines)
+                _write_screenshots(lines, evidence.screenshots.all(), screenshot_paths)
 
         if machine.flags.exists():
-            _write_line(lines, "## Flags")
-            _write_line(lines)
+            _section(lines, i18n['flags'])
             for flag in machine.flags.all():
                 _write_line(lines, f"### {flag.flag_type}")
                 _write_line(lines)
                 value = "[censored]" if flag.censored else flag.value
-                _write_line(lines, f"- Value: `{value}`")
+                _write_line(lines, f"- {i18n['value']}: `{value}`")
                 if flag.phase:
-                    _write_line(lines, f"- Phase: {flag.get_phase_display()}")
+                    _write_line(lines, f"- {i18n['phase']}: {_phase_title(i18n, flag.phase)}")
                 if flag.location:
-                    _write_line(lines, f"- Location: `{flag.location}`")
+                    _write_line(lines, f"- {i18n['location']}: `{flag.location}`")
                 if flag.obtained_as_user:
-                    _write_line(lines, f"- User: `{flag.obtained_as_user}`")
+                    _write_line(lines, f"- {i18n['user']}: `{flag.obtained_as_user}`")
                 _write_line(lines)
                 _code_block(lines, flag.found_commands, "bash")
                 if flag.notes:
@@ -165,8 +182,7 @@ def build_markdown_zip(machine):
 
         notes = list(machine.evidences.filter(phase=Evidence.Phase.NOTES))
         if notes:
-            _write_line(lines, "## Notes")
-            _write_line(lines)
+            _section(lines, i18n['notes'])
             for evidence in notes:
                 _write_line(lines, f"### {evidence.title}")
                 _write_line(lines)
@@ -175,24 +191,7 @@ def build_markdown_zip(machine):
                     _write_line(lines)
                 _code_block(lines, evidence.command, "bash")
                 _code_block(lines, evidence.output)
-                for screenshot in evidence.screenshots.all():
-                    path = screenshot_paths.get(screenshot.pk)
-                    if path:
-                        alt = screenshot.caption or screenshot.title or screenshot.image.name
-                        _write_line(lines, f"![{alt}]({path})")
-                        _write_line(lines)
-
-        gallery = [(screenshot, screenshot_paths.get(screenshot.pk)) for screenshot in machine.screenshots.all()]
-        gallery = [(screenshot, path) for screenshot, path in gallery if path]
-        if gallery:
-            _write_line(lines, "## Screenshot Gallery")
-            _write_line(lines)
-            for screenshot, path in gallery:
-                alt = screenshot.caption or screenshot.title or screenshot.image.name
-                _write_line(lines, f"![{alt}]({path})")
-                if screenshot.caption:
-                    _write_line(lines, f"*{screenshot.caption}*")
-                _write_line(lines)
+                _write_screenshots(lines, evidence.screenshots.all(), screenshot_paths)
 
         report_path = os.path.join(tmp_dir, "report.md")
         with open(report_path, "w", encoding="utf-8") as report:

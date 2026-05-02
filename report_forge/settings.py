@@ -37,7 +37,7 @@ MIDDLEWARE = [
     'django_htmx.middleware.HtmxMiddleware',
 ]
 
-ROOT_URLCONF = 'ctf_report_forge.urls'
+ROOT_URLCONF = 'report_forge.urls'
 
 TEMPLATES = [
     {
@@ -55,7 +55,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'ctf_report_forge.wsgi.application'
+WSGI_APPLICATION = 'report_forge.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
