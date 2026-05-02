@@ -1,3 +1,4 @@
+from collections import defaultdict
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 import json
@@ -11,6 +12,28 @@ from django.views.decorators.http import require_POST
 from .models import Machine, Evidence, Vulnerability, Exploit, Screenshot, Flag
 from .forms import MachineForm, EvidenceForm, VulnerabilityForm, ExploitForm, ScreenshotForm, FlagForm
 
+
+def _attach_screenshots(request, machine, *, phase, caption_prefix="Attachment", **fk_kwargs):
+    """Attach uploaded screenshots from the request to a parent entity."""
+    for f in request.FILES.getlist('screenshots'):
+        Screenshot.objects.create(
+            machine=machine, phase=phase, image=f,
+            caption=f"{caption_prefix} - Attachment", **fk_kwargs
+        )
+
+
+def _success_response(request, message, redirect_target):
+    """Return HX-Refresh for HTMX requests or a standard redirect.
+
+    redirect_target can be a URL name string or a (viewname, *args) tuple.
+    """
+    messages.success(request, message)
+    if request.htmx:
+        return HttpResponse(status=204, headers={'HX-Refresh': 'true'})
+    if isinstance(redirect_target, tuple):
+        return redirect(redirect_target[0], *redirect_target[1:])
+    return redirect(redirect_target)
+
 # --- Machine Views ---
 
 def machine_list(request):
@@ -19,16 +42,30 @@ def machine_list(request):
 
 @ensure_csrf_cookie
 def machine_detail(request, pk):
-    machine = get_object_or_404(Machine, pk=pk)
+    machine = get_object_or_404(
+        Machine.objects.prefetch_related(
+            'evidences__screenshots',
+            'vulnerabilities__screenshots',
+            'exploits__screenshots',
+            'exploits__vulnerability',
+            'screenshots',
+            'flags',
+        ),
+        pk=pk,
+    )
     
-    # Group evidences by phase
+    # Group evidences by phase in Python (already prefetched, no extra queries)
+    evidence_groups = defaultdict(list)
+    for ev in machine.evidences.all():
+        evidence_groups[ev.phase].append(ev)
+    
     evidences_by_phase = {}
     timeline_phases = {}
     for choice in Evidence.Phase.choices:
         phase_id = choice[0]
         phase_data = {
             'name': choice[1],
-            'evidences': machine.evidences.filter(phase=phase_id)
+            'evidences': evidence_groups.get(phase_id, []),
         }
         evidences_by_phase[phase_id] = phase_data
         if phase_id != Evidence.Phase.NOTES:
@@ -87,18 +124,11 @@ def evidence_create(request, machine_id):
             evidence = form.save(commit=False)
             evidence.machine = machine
             evidence.save()
-            for f in request.FILES.getlist('screenshots'):
-                Screenshot.objects.create(
-                    machine=machine,
-                    evidence=evidence,
-                    phase=evidence.phase,
-                    image=f,
-                    caption=f"{evidence.title} - Attachment"
-                )
-            messages.success(request, 'Evidence added.')
-            if request.htmx:
-                return HttpResponse(status=204, headers={'HX-Refresh': 'true'})
-            return redirect('reports:machine_detail', pk=machine.pk)
+            _attach_screenshots(
+                request, machine, phase=evidence.phase,
+                evidence=evidence, caption_prefix=evidence.title
+            )
+            return _success_response(request, 'Evidence added.', ('reports:machine_detail', machine.pk))
     else:
         initial = {'phase': request.GET.get('phase', Evidence.Phase.RECON)}
         form = EvidenceForm(initial=initial)
@@ -112,18 +142,11 @@ def evidence_edit(request, machine_id, pk):
         form = EvidenceForm(request.POST, request.FILES, instance=evidence)
         if form.is_valid():
             form.save()
-            for f in request.FILES.getlist('screenshots'):
-                Screenshot.objects.create(
-                    machine=machine,
-                    evidence=evidence,
-                    phase=evidence.phase,
-                    image=f,
-                    caption=f"{evidence.title} - Attachment"
-                )
-            messages.success(request, 'Evidence updated.')
-            if request.htmx:
-                return HttpResponse(status=204, headers={'HX-Refresh': 'true'})
-            return redirect('reports:machine_detail', pk=machine.pk)
+            _attach_screenshots(
+                request, machine, phase=evidence.phase,
+                evidence=evidence, caption_prefix=evidence.title
+            )
+            return _success_response(request, 'Evidence updated.', ('reports:machine_detail', machine.pk))
     else:
         form = EvidenceForm(instance=evidence)
     return render(request, 'reports/evidence_form.html', {'form': form, 'machine': machine, 'evidence': evidence})
@@ -148,18 +171,11 @@ def vulnerability_create(request, machine_id):
             vuln = form.save(commit=False)
             vuln.machine = machine
             vuln.save()
-            for f in request.FILES.getlist('screenshots'):
-                Screenshot.objects.create(
-                    machine=machine,
-                    vulnerability=vuln,
-                    phase=Evidence.Phase.VULN_ID,
-                    image=f,
-                    caption=f"{vuln.title} - Attachment"
-                )
-            messages.success(request, 'Vulnerability added.')
-            if request.htmx:
-                return HttpResponse(status=204, headers={'HX-Refresh': 'true'})
-            return redirect('reports:machine_detail', pk=machine.pk)
+            _attach_screenshots(
+                request, machine, phase=Evidence.Phase.VULN_ID,
+                vulnerability=vuln, caption_prefix=vuln.title
+            )
+            return _success_response(request, 'Vulnerability added.', ('reports:machine_detail', machine.pk))
     else:
         form = VulnerabilityForm()
     return render(request, 'reports/vulnerability_form.html', {'form': form, 'machine': machine})
@@ -171,18 +187,11 @@ def vulnerability_edit(request, machine_id, pk):
         form = VulnerabilityForm(request.POST, request.FILES, instance=vuln)
         if form.is_valid():
             form.save()
-            for f in request.FILES.getlist('screenshots'):
-                Screenshot.objects.create(
-                    machine=machine,
-                    vulnerability=vuln,
-                    phase=Evidence.Phase.VULN_ID,
-                    image=f,
-                    caption=f"{vuln.title} - Attachment"
-                )
-            messages.success(request, 'Vulnerability updated.')
-            if request.htmx:
-                return HttpResponse(status=204, headers={'HX-Refresh': 'true'})
-            return redirect('reports:machine_detail', pk=machine.pk)
+            _attach_screenshots(
+                request, machine, phase=Evidence.Phase.VULN_ID,
+                vulnerability=vuln, caption_prefix=vuln.title
+            )
+            return _success_response(request, 'Vulnerability updated.', ('reports:machine_detail', machine.pk))
     else:
         form = VulnerabilityForm(instance=vuln)
     return render(request, 'reports/vulnerability_form.html', {'form': form, 'machine': machine, 'vulnerability': vuln})
@@ -207,18 +216,11 @@ def exploit_create(request, machine_id):
             exploit = form.save(commit=False)
             exploit.machine = machine
             exploit.save()
-            for f in request.FILES.getlist('screenshots'):
-                Screenshot.objects.create(
-                    machine=machine,
-                    exploit=exploit,
-                    phase=Evidence.Phase.EXPLOIT,
-                    image=f,
-                    caption=f"{exploit.name} - Attachment"
-                )
-            messages.success(request, 'Exploit added.')
-            if request.htmx:
-                return HttpResponse(status=204, headers={'HX-Refresh': 'true'})
-            return redirect('reports:machine_detail', pk=machine.pk)
+            _attach_screenshots(
+                request, machine, phase=Evidence.Phase.EXPLOIT,
+                exploit=exploit, caption_prefix=exploit.name
+            )
+            return _success_response(request, 'Exploit added.', ('reports:machine_detail', machine.pk))
     else:
         form = ExploitForm(machine=machine)
     return render(request, 'reports/exploit_form.html', {'form': form, 'machine': machine})
@@ -230,18 +232,11 @@ def exploit_edit(request, machine_id, pk):
         form = ExploitForm(request.POST, request.FILES, instance=exploit, machine=machine)
         if form.is_valid():
             form.save()
-            for f in request.FILES.getlist('screenshots'):
-                Screenshot.objects.create(
-                    machine=machine,
-                    exploit=exploit,
-                    phase=Evidence.Phase.EXPLOIT,
-                    image=f,
-                    caption=f"{exploit.name} - Attachment"
-                )
-            messages.success(request, 'Exploit updated.')
-            if request.htmx:
-                return HttpResponse(status=204, headers={'HX-Refresh': 'true'})
-            return redirect('reports:machine_detail', pk=machine.pk)
+            _attach_screenshots(
+                request, machine, phase=Evidence.Phase.EXPLOIT,
+                exploit=exploit, caption_prefix=exploit.name
+            )
+            return _success_response(request, 'Exploit updated.', ('reports:machine_detail', machine.pk))
     else:
         form = ExploitForm(instance=exploit, machine=machine)
     return render(request, 'reports/exploit_form.html', {'form': form, 'machine': machine, 'exploit': exploit})

@@ -1,4 +1,5 @@
 {% extends 'reports/base.html' %}
+{% load static %}
 
 {% block title %}{{ machine.name }} - Report Forge{% endblock %}
 
@@ -507,8 +508,8 @@
 {% endblock %}
 
 {% block extra_head %}
-<!-- Highlight.js for syntax highlighting -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+<!-- Highlight.js for syntax highlighting (local) -->
+<link rel="stylesheet" href="{% static 'reports/css/atom-one-dark.min.css' %}">
 <style>
     /* Smooth scroll for sidebar links */
     html {
@@ -566,7 +567,7 @@
 {% endblock %}
 
 {% block extra_js %}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="{% static 'reports/js/highlight.min.js' %}"></script>
 <script>
 hljs.highlightAll();
 
