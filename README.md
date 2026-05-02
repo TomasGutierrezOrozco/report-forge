@@ -122,7 +122,7 @@ La pantalla de exportación ofrece:
 
 El ZIP Markdown incluye:
 
-- `report.md`.
+- `<maquina>_es.md` o `<maquina>_en.md`, según el idioma del informe.
 - `assets/screenshots/` con las imágenes referenciadas desde el Markdown.
 
 El PDF requiere que `latexmk` y una distribución LaTeX estén instalados en el sistema. Si no están disponibles, puedes generar el `main.tex` y compilarlo manualmente con tu herramienta preferida.
@@ -271,7 +271,7 @@ El botón de PDF:
 Genera y descarga un ZIP con:
 
 ```text
-report.md
+<maquina>_es.md o <maquina>_en.md
 assets/screenshots/<imagenes>
 ```
 
