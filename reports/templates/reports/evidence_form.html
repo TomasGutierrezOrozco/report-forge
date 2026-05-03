@@ -2,7 +2,7 @@
 {% load i18n %}
 
 {% block title %}
-    {% if form.instance.pk %}Edit Evidence{% else %}Add Evidence{% endif %}
+    {% if form.instance.pk %}{% trans "Edit Evidence" %}{% else %}{% trans "Add Evidence" %}{% endif %}
 {% endblock %}
 
 {% block content %}
@@ -11,9 +11,9 @@
     <div class="col-xl-9 col-lg-10">
         <nav aria-label="breadcrumb" class="mb-4">
             <ol class="breadcrumb mb-0">
-                <li class="breadcrumb-item"><a href="{% url 'reports:machine_list' %}" style="color: var(--ctf-text-muted); text-decoration: none;">Machines</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'reports:machine_list' %}" style="color: var(--ctf-text-muted); text-decoration: none;">{% trans "Machines" %}</a></li>
                 <li class="breadcrumb-item"><a href="{% url 'reports:machine_detail' machine.pk %}" class="text-primary-custom text-decoration-none fw-bold">{{ machine.name }}</a></li>
-                <li class="breadcrumb-item active text-white" aria-current="page">Evidence</li>
+                <li class="breadcrumb-item active text-white" aria-current="page">{% trans "Evidence" %}</li>
             </ol>
         </nav>
 

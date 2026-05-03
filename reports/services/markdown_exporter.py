@@ -4,6 +4,7 @@ from io import BytesIO
 from tempfile import TemporaryDirectory
 
 from slugify import slugify
+from django.utils import translation
 
 from reports.models import Evidence
 from reports.services.i18n import get_i18n
@@ -83,117 +84,118 @@ def build_markdown_zip(machine):
                 target.write(source.read())
             screenshot_paths[screenshot.pk] = f"assets/screenshots/{filename}"
 
-        lines = []
-        _write_line(lines, f"# {machine.name}")
-        _write_line(lines)
-        _write_line(lines, f"- {i18n['platform']}: {machine.platform}")
-        _write_line(lines, f"- {i18n['difficulty']}: {machine.difficulty}")
-        _write_line(lines, f"- {i18n['operating_system']}: {machine.operating_system}")
-        if machine.target_ip:
-            _write_line(lines, f"- {i18n['target_ip']}: `{machine.target_ip}`")
-        if machine.author:
-            _write_line(lines, f"- {i18n['author_label']}: {machine.author}")
-        _write_line(lines)
-
-        if machine.description:
-            _section(lines, i18n['overview'])
-            _write_line(lines, machine.description.strip())
+        with translation.override(machine.report_language):
+            lines = []
+            _write_line(lines, f"# {machine.name}")
+            _write_line(lines)
+            _write_line(lines, f"- {i18n['platform']}: {machine.display_platform()}")
+            _write_line(lines, f"- {i18n['difficulty']}: {machine.get_difficulty_display()}")
+            _write_line(lines, f"- {i18n['operating_system']}: {machine.display_operating_system()}")
+            if machine.target_ip:
+                _write_line(lines, f"- {i18n['target_ip']}: `{machine.target_ip}`")
+            if machine.author:
+                _write_line(lines, f"- {i18n['author_label']}: {machine.author}")
             _write_line(lines)
 
-        for phase_id, _ in Evidence.Phase.choices:
-            if phase_id == Evidence.Phase.NOTES:
-                continue
-            evidences = list(machine.evidences.filter(phase=phase_id))
-            phase_vulns = list(machine.vulnerabilities.all()) if phase_id == Evidence.Phase.VULN_ID else []
-            phase_exploits = list(machine.exploits.all()) if phase_id == Evidence.Phase.EXPLOIT else []
-            if not evidences and not phase_vulns and not phase_exploits:
-                continue
+            if machine.description:
+                _section(lines, i18n['overview'])
+                _write_line(lines, machine.description.strip())
+                _write_line(lines)
 
-            _section(lines, _phase_title(i18n, phase_id))
+            for phase_id, _ in Evidence.Phase.choices:
+                if phase_id == Evidence.Phase.NOTES:
+                    continue
+                evidences = list(machine.evidences.filter(phase=phase_id))
+                phase_vulns = list(machine.vulnerabilities.all()) if phase_id == Evidence.Phase.VULN_ID else []
+                phase_exploits = list(machine.exploits.all()) if phase_id == Evidence.Phase.EXPLOIT else []
+                if not evidences and not phase_vulns and not phase_exploits:
+                    continue
 
-            for vuln in phase_vulns:
-                _write_line(lines, f"### {i18n['vulnerability']}: {vuln.title}")
-                _write_line(lines)
-                _write_line(lines, f"- {i18n['severity']}: {vuln.severity}")
-                _write_line(lines, f"- {i18n['type']}: {vuln.vulnerability_type}")
-                if vuln.cve:
-                    _write_line(lines, f"- CVE: `{vuln.cve}`")
-                if vuln.affected_service or vuln.affected_port:
-                    _write_line(lines, f"- {i18n['affected']}: {vuln.affected_service} {vuln.affected_port}".strip())
-                _write_line(lines)
-                if vuln.how_identified:
-                    _write_line(lines, vuln.how_identified.strip())
-                    _write_line(lines)
-                _code_block(lines, vuln.evidence)
-                if vuln.impact:
-                    _write_line(lines, f"{i18n['impact']}: {vuln.impact.strip()}")
-                    _write_line(lines)
-                if vuln.recommendation:
-                    _write_line(lines, f"{i18n['recommendation']}: {vuln.recommendation.strip()}")
-                    _write_line(lines)
-                _write_screenshots(lines, vuln.screenshots.all(), screenshot_paths)
+                _section(lines, _phase_title(i18n, phase_id))
 
-            for exploit in phase_exploits:
-                _write_line(lines, f"### {i18n['exploit']}: {exploit.name}")
-                _write_line(lines)
-                _write_line(lines, f"- {i18n['type']}: {exploit.exploit_type}")
-                _write_line(lines, f"- {i18n['objective']}: {exploit.objective}")
-                if exploit.cve:
-                    _write_line(lines, f"- CVE: `{exploit.cve}`")
-                if exploit.url:
-                    _write_line(lines, f"- URL: {exploit.url}")
-                _write_line(lines)
-                if exploit.explanation:
-                    _write_line(lines, exploit.explanation.strip())
+                for vuln in phase_vulns:
+                    _write_line(lines, f"### {i18n['vulnerability']}: {vuln.title}")
                     _write_line(lines)
-                _code_block(lines, exploit.command_used, "bash")
-                _code_block(lines, exploit.output)
-                if exploit.result:
-                    _write_line(lines, f"{i18n['outcome']}: {exploit.result.strip()}")
+                    _write_line(lines, f"- {i18n['severity']}: {vuln.get_severity_display()}")
+                    _write_line(lines, f"- {i18n['type']}: {vuln.display_vulnerability_type()}")
+                    if vuln.cve:
+                        _write_line(lines, f"- CVE: `{vuln.cve}`")
+                    if vuln.affected_service or vuln.affected_port:
+                        _write_line(lines, f"- {i18n['affected']}: {vuln.affected_service} {vuln.affected_port}".strip())
                     _write_line(lines)
-                _write_screenshots(lines, exploit.screenshots.all(), screenshot_paths)
+                    if vuln.how_identified:
+                        _write_line(lines, vuln.how_identified.strip())
+                        _write_line(lines)
+                    _code_block(lines, vuln.evidence)
+                    if vuln.impact:
+                        _write_line(lines, f"{i18n['impact']}: {vuln.impact.strip()}")
+                        _write_line(lines)
+                    if vuln.recommendation:
+                        _write_line(lines, f"{i18n['recommendation']}: {vuln.recommendation.strip()}")
+                        _write_line(lines)
+                    _write_screenshots(lines, vuln.screenshots.all(), screenshot_paths)
 
-            for evidence in evidences:
-                _write_line(lines, f"### {evidence.title}")
-                _write_line(lines)
-                if evidence.explanation:
-                    _write_line(lines, evidence.explanation.strip())
+                for exploit in phase_exploits:
+                    _write_line(lines, f"### {i18n['exploit']}: {exploit.name}")
                     _write_line(lines)
-                _code_block(lines, evidence.command, "bash")
-                _code_block(lines, evidence.output)
-                _write_screenshots(lines, evidence.screenshots.all(), screenshot_paths)
+                    _write_line(lines, f"- {i18n['type']}: {exploit.display_exploit_type()}")
+                    _write_line(lines, f"- {i18n['objective']}: {exploit.get_objective_display()}")
+                    if exploit.cve:
+                        _write_line(lines, f"- CVE: `{exploit.cve}`")
+                    if exploit.url:
+                        _write_line(lines, f"- URL: {exploit.url}")
+                    _write_line(lines)
+                    if exploit.explanation:
+                        _write_line(lines, exploit.explanation.strip())
+                        _write_line(lines)
+                    _code_block(lines, exploit.command_used, "bash")
+                    _code_block(lines, exploit.output)
+                    if exploit.result:
+                        _write_line(lines, f"{i18n['outcome']}: {exploit.result.strip()}")
+                        _write_line(lines)
+                    _write_screenshots(lines, exploit.screenshots.all(), screenshot_paths)
 
-        if machine.flags.exists():
-            _section(lines, i18n['flags'])
-            for flag in machine.flags.all():
-                _write_line(lines, f"### {flag.flag_type}")
-                _write_line(lines)
-                value = "[censored]" if flag.censored else flag.value
-                _write_line(lines, f"- {i18n['value']}: `{value}`")
-                if flag.phase:
-                    _write_line(lines, f"- {i18n['phase']}: {_phase_title(i18n, flag.phase)}")
-                if flag.location:
-                    _write_line(lines, f"- {i18n['location']}: `{flag.location}`")
-                if flag.obtained_as_user:
-                    _write_line(lines, f"- {i18n['user']}: `{flag.obtained_as_user}`")
-                _write_line(lines)
-                _code_block(lines, flag.found_commands, "bash")
-                if flag.notes:
-                    _write_line(lines, flag.notes.strip())
+                for evidence in evidences:
+                    _write_line(lines, f"### {evidence.title}")
                     _write_line(lines)
+                    if evidence.explanation:
+                        _write_line(lines, evidence.explanation.strip())
+                        _write_line(lines)
+                    _code_block(lines, evidence.command, "bash")
+                    _code_block(lines, evidence.output)
+                    _write_screenshots(lines, evidence.screenshots.all(), screenshot_paths)
 
-        notes = list(machine.evidences.filter(phase=Evidence.Phase.NOTES))
-        if notes:
-            _section(lines, i18n['notes'])
-            for evidence in notes:
-                _write_line(lines, f"### {evidence.title}")
-                _write_line(lines)
-                if evidence.explanation:
-                    _write_line(lines, evidence.explanation.strip())
+            if machine.flags.exists():
+                _section(lines, i18n['flags'])
+                for flag in machine.flags.all():
+                    _write_line(lines, f"### {flag.display_flag_type()}")
                     _write_line(lines)
-                _code_block(lines, evidence.command, "bash")
-                _code_block(lines, evidence.output)
-                _write_screenshots(lines, evidence.screenshots.all(), screenshot_paths)
+                    value = i18n['censored'] if flag.censored else flag.value
+                    _write_line(lines, f"- {i18n['value']}: `{value}`")
+                    if flag.phase:
+                        _write_line(lines, f"- {i18n['phase']}: {_phase_title(i18n, flag.phase)}")
+                    if flag.location:
+                        _write_line(lines, f"- {i18n['location']}: `{flag.location}`")
+                    if flag.obtained_as_user:
+                        _write_line(lines, f"- {i18n['user']}: `{flag.obtained_as_user}`")
+                    _write_line(lines)
+                    _code_block(lines, flag.found_commands, "bash")
+                    if flag.notes:
+                        _write_line(lines, flag.notes.strip())
+                        _write_line(lines)
+
+            notes = list(machine.evidences.filter(phase=Evidence.Phase.NOTES))
+            if notes:
+                _section(lines, i18n['notes'])
+                for evidence in notes:
+                    _write_line(lines, f"### {evidence.title}")
+                    _write_line(lines)
+                    if evidence.explanation:
+                        _write_line(lines, evidence.explanation.strip())
+                        _write_line(lines)
+                    _code_block(lines, evidence.command, "bash")
+                    _code_block(lines, evidence.output)
+                    _write_screenshots(lines, evidence.screenshots.all(), screenshot_paths)
 
         report_path = os.path.join(tmp_dir, report_filename)
         with open(report_path, "w", encoding="utf-8") as report:

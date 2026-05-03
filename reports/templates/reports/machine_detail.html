@@ -11,10 +11,10 @@
             {{ machine.name }}
         </h2>
         <div class="d-flex align-items-center gap-3 text-muted mt-2 flex-wrap">
-            <span class="badge" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: 500;">{{ machine.platform }}</span>
+            <span class="badge" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: 500;">{{ machine.display_platform }}</span>
             <span class="d-flex align-items-center gap-1">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h4l2-9 5 18 2-9h5"></path></svg>
-                {{ machine.difficulty }}
+                {{ machine.get_difficulty_display }}
             </span>
             <span class="d-flex align-items-center gap-1">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
@@ -52,7 +52,7 @@
     <div class="col-xl-3 mb-4 mb-xl-0">
         <!-- Sidebar Navigation -->
         <div class="list-group sticky-top" style="top: 100px;">
-            <div class="list-group-item bg-transparent text-muted small fw-bold text-uppercase" style="border:none; padding-left:0;">Pentest Flow</div>
+            <div class="list-group-item bg-transparent text-muted small fw-bold text-uppercase" style="border:none; padding-left:0;">{% trans "Pentest Flow" %}</div>
             
             <a href="#phase_reconnaissance" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" style="background: rgba(255,255,255,0.03); border: 1px solid var(--ctf-card-border); border-bottom: none; color: #fff;">
                 1. {% trans "Reconnaissance" %}
@@ -343,7 +343,7 @@
             <button hx-get="{% url 'reports:flag_create' machine.pk %}" hx-target="#dialog"
                 class="btn btn-sm px-3 rounded-pill"
                 style="color: #ff33cc; border: 1px solid #ff33cc; background: rgba(255,51,204,0.05);">
-                + Capture Flag
+                {% trans "+ Capture Flag" %}
             </button>
         </div>
 
@@ -358,7 +358,7 @@
                                 <div class="d-flex align-items-center gap-2">
                                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff33cc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg>
                                     <span class="badge fw-bold fs-6" style="background: rgba(255,51,204,0.15); color: #ff33cc; border: 1px solid rgba(255,51,204,0.3); font-family: 'Fira Code', monospace; letter-spacing: 1px;">{{ flag.flag_type }}</span>
-                                    {% if flag.censored %}<span class="badge" style="background: rgba(255,204,0,0.15); color: #ffcc00; border: 1px solid rgba(255,204,0,0.3); font-size:0.7rem;">CENSORED</span>{% endif %}
+                                    {% if flag.censored %}<span class="badge" style="background: rgba(255,204,0,0.15); color: #ffcc00; border: 1px solid rgba(255,204,0,0.3); font-size:0.7rem;">{% trans "CENSORED" %}</span>{% endif %}
                                 </div>
                                 <div class="d-flex gap-1">
                                     <button hx-get="{% url 'reports:flag_edit' machine.pk flag.pk %}" hx-target="#dialog" class="btn btn-sm p-1 text-muted border-0" title="Edit flag">
@@ -395,7 +395,7 @@
                                 {% endif %}
                                 {% if flag.phase %}
                                 <div class="small">
-                                    <span class="text-muted me-1">Phase</span>
+                                    <span class="text-muted me-1">{% trans "Phase" %}</span>
                                     <code style="color: #e879f9; font-size: 0.78rem;">{{ flag.get_phase_display }}</code>
                                 </div>
                                 {% endif %}
@@ -419,8 +419,8 @@
         {% else %}
             <div class="card bg-transparent border-0 shadow-none mb-5 p-4 text-center" style="border: 1px dashed rgba(255,51,204,0.2) !important;">
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="rgba(255,51,204,0.4)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-3"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg>
-                <p class="text-muted mb-1">No flags captured yet.</p>
-                <small class="text-muted opacity-50">Click "+ Capture Flag" to record your first flag.</small>
+                <p class="text-muted mb-1">{% trans "No flags captured yet." %}</p>
+                <small class="text-muted opacity-50">{% trans 'Click "+ Capture Flag" to record your first flag.' %}</small>
             </div>
         {% endif %}
 
@@ -486,10 +486,10 @@
                                 <img src="{{ screenshot.image.url }}" class="w-100 h-100 object-fit-cover" style="opacity: 0.8; transition: all 0.3s;" onmouseover="this.style.opacity=1; this.style.transform='scale(1.05)';" onmouseout="this.style.opacity=0.8; this.style.transform='scale(1)';" alt="{{ screenshot.title }}">
                             </div>
                             <div class="px-1">
-                                <h6 class="text-white mb-1 text-truncate">{{ screenshot.title|default:"Unnamed Screenshot" }}</h6>
+                                <h6 class="text-white mb-1 text-truncate">{{ screenshot.title|default:_("Unnamed Screenshot") }}</h6>
                                 <p class="small text-muted mb-2 text-truncate">{{ screenshot.caption }}</p>
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <span class="badge" style="background: rgba(255,255,255,0.05); color: #94A3B8; border: 1px solid rgba(255,255,255,0.1);">{{ screenshot.phase|default:"No phase"|title }}</span>
+                                    <span class="badge" style="background: rgba(255,255,255,0.05); color: #94A3B8; border: 1px solid rgba(255,255,255,0.1);">{{ screenshot.phase|default:_("No phase")|title }}</span>
                                     <button hx-get="{% url 'reports:screenshot_delete' machine.pk screenshot.pk %}" hx-target="#dialog" class="btn p-0 text-danger small text-decoration-none d-flex align-items-center gap-1 border-0"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg></button>
                                 </div>
                             </div>
@@ -669,7 +669,7 @@ hljs.highlightAll();
 
     document.querySelectorAll('.inline-screenshot-delete').forEach((button) => {
         button.addEventListener('click', function() {
-            if (!window.confirm('Delete this screenshot?')) return;
+            if (!window.confirm('{% trans "Delete this screenshot?" %}')) return;
             button.disabled = true;
 
             fetch(button.dataset.deleteUrl, {
@@ -684,12 +684,12 @@ hljs.highlightAll();
                 const column = wrapper?.closest('[class*="col-"]');
                 if (column) {
                     column.remove();
-                %} else if (wrapper) {
+                } else if (wrapper) {
                     wrapper.remove();
                 }
             }).catch(() => {
                 button.disabled = false;
-                window.alert('Could not delete the screenshot.');
+                window.alert('{% trans "Could not delete the screenshot." %}');
             });
         });
     });

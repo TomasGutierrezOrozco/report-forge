@@ -11,7 +11,7 @@
     \hline
     \endhead
     \BLOCK{ for vuln in vulnerabilities }
-    \VAR{ vuln.title | escape_tex } & \VAR{ vuln.severity | escape_tex } & \VAR{ vuln.vulnerability_type | escape_tex } & \VAR{ vuln.affected_service | escape_tex } \\
+    \VAR{ vuln.title | escape_tex } & \VAR{ vuln.get_severity_display() | escape_tex } & \VAR{ vuln.display_vulnerability_type() | escape_tex } & \VAR{ vuln.affected_service | escape_tex } \\
     \hline
     \BLOCK{ endfor }
     \end{longtable}

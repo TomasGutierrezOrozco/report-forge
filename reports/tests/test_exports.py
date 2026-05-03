@@ -1,9 +1,11 @@
 import zipfile
 from io import BytesIO
+from tempfile import TemporaryDirectory
 
-from django.test import TestCase
+from django.test import TestCase, override_settings
 
 from reports.models import Machine, Evidence, Vulnerability, Exploit, Flag
+from reports.services.latex_renderer import render_machine_to_latex
 from reports.services.markdown_exporter import build_markdown_zip
 
 
@@ -134,7 +136,7 @@ class MarkdownExportTest(TestCase):
 
             # Flags
             self.assertIn("user.txt", content)
-            self.assertIn("[censored]", content)
+            self.assertIn("[CENSORED]", content)
             # Uncensored root flag
             self.assertIn("root_hash_789", content)
 
@@ -151,6 +153,112 @@ class MarkdownExportTest(TestCase):
             self.assertIn("Dificultad", content)
             self.assertIn("Reconocimiento", content)
             self.assertIn("Vulnerabilidad", content)
+
+    def test_spanish_markdown_export_translates_choice_values(self):
+        machine = Machine.objects.create(
+            name="CajaOpciones",
+            platform=Machine.Platform.OTHER,
+            custom_platform="PortSwigger Academy",
+            difficulty=Machine.Difficulty.EASY,
+            operating_system=Machine.OS.OTHER,
+            custom_operating_system="TempleOS",
+            report_language="es",
+        )
+        Vulnerability.objects.create(
+            machine=machine,
+            title="Finding",
+            vulnerability_type=Vulnerability.Type.OTHER,
+            custom_vulnerability_type="Race Condition",
+            severity=Vulnerability.Severity.HIGH,
+        )
+        Exploit.objects.create(
+            machine=machine,
+            name="Manual Exploit",
+            exploit_type=Exploit.Type.OTHER,
+            custom_exploit_type="One-off Script",
+            objective=Exploit.Objective.INITIAL_ACCESS,
+        )
+        Flag.objects.create(
+            machine=machine,
+            flag_type=Flag.Type.OTHER,
+            custom_flag_type="bonus.txt",
+            value="secret",
+            censored=True,
+        )
+
+        archive_bytes, _ = build_markdown_zip(machine)
+
+        with zipfile.ZipFile(BytesIO(archive_bytes)) as zf:
+            md_files = [n for n in zf.namelist() if n.endswith(".md")]
+            content = zf.read(md_files[0]).decode("utf-8")
+
+            self.assertIn("Plataforma: PortSwigger Academy", content)
+            self.assertIn("Dificultad: Fácil", content)
+            self.assertIn("Sistema Operativo: TempleOS", content)
+            self.assertIn("Severidad: Alto", content)
+            self.assertIn("Tipo: Race Condition", content)
+            self.assertIn("Tipo: One-off Script", content)
+            self.assertIn("Objetivo: Acceso Inicial", content)
+            self.assertIn("### bonus.txt", content)
+            self.assertIn("[CENSURADO]", content)
+            self.assertNotIn("Plataforma: Otro", content)
+            self.assertNotIn("Sistema Operativo: Otro", content)
+            self.assertNotIn("Platform: Other", content)
+            self.assertNotIn("Difficulty: Easy", content)
+            self.assertNotIn("[censored]", content)
+
+    def test_spanish_latex_export_translates_choice_values(self):
+        with TemporaryDirectory() as export_root:
+            with override_settings(EXPORTS_ROOT=export_root):
+                machine = Machine.objects.create(
+                    name="CajaLatex",
+                    platform=Machine.Platform.OTHER,
+                    custom_platform="PortSwigger Academy",
+                    difficulty=Machine.Difficulty.EASY,
+                    operating_system=Machine.OS.OTHER,
+                    custom_operating_system="TempleOS",
+                    report_language="es",
+                )
+                Vulnerability.objects.create(
+                    machine=machine,
+                    title="Finding",
+                    vulnerability_type=Vulnerability.Type.OTHER,
+                    custom_vulnerability_type="Race Condition",
+                    severity=Vulnerability.Severity.HIGH,
+                )
+                Exploit.objects.create(
+                    machine=machine,
+                    name="Manual Exploit",
+                    exploit_type=Exploit.Type.OTHER,
+                    custom_exploit_type="One-off Script",
+                    objective=Exploit.Objective.INITIAL_ACCESS,
+                )
+                Flag.objects.create(
+                    machine=machine,
+                    flag_type=Flag.Type.OTHER,
+                    custom_flag_type="bonus.txt",
+                    value="secret",
+                    censored=True,
+                )
+
+                _, tex_path = render_machine_to_latex(machine)
+
+                with open(tex_path, encoding="utf-8") as report:
+                    content = report.read()
+
+            self.assertIn("PortSwigger Academy", content)
+            self.assertIn("TempleOS", content)
+            self.assertIn("Fácil", content)
+            self.assertIn("Alto", content)
+            self.assertIn("Race Condition", content)
+            self.assertIn("One-off Script", content)
+            self.assertIn("bonus.txt", content)
+            self.assertIn("Acceso Inicial", content)
+            self.assertIn("[CENSURADO]", content)
+            self.assertNotIn("Other", content)
+            self.assertNotIn("Otro", content)
+            self.assertNotIn("Easy", content)
+            self.assertNotIn("Initial Access", content)
 
     def test_notes_phase_at_end(self):
         machine = Machine.objects.create(name="NotesBox")

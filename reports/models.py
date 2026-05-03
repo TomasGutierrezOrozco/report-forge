@@ -1,6 +1,12 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+
+def _custom_or_choice(custom_value, choice_label):
+    custom_value = (custom_value or '').strip()
+    return custom_value or choice_label
+
+
 class Machine(models.Model):
     class Platform(models.TextChoices):
         HTB = 'HackTheBox', _('HackTheBox')
@@ -54,8 +60,18 @@ class Machine(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    def display_platform(self):
+        if self.platform == self.Platform.OTHER:
+            return _custom_or_choice(self.custom_platform, self.get_platform_display())
+        return self.get_platform_display()
+
+    def display_operating_system(self):
+        if self.operating_system == self.OS.OTHER:
+            return _custom_or_choice(self.custom_operating_system, self.get_operating_system_display())
+        return self.get_operating_system_display()
+
     def __str__(self):
-        return f"{self.name} ({self.platform})"
+        return f"{self.name} ({self.display_platform()})"
 
 class Evidence(models.Model):
     class Phase(models.TextChoices):
@@ -132,6 +148,11 @@ class Vulnerability(models.Model):
     def __str__(self):
         return self.title
 
+    def display_vulnerability_type(self):
+        if self.vulnerability_type == self.Type.OTHER:
+            return _custom_or_choice(self.custom_vulnerability_type, self.get_vulnerability_type_display())
+        return self.get_vulnerability_type_display()
+
 class Exploit(models.Model):
     class Type(models.TextChoices):
         MANUAL = 'Manual Technique', _('Manual Technique')
@@ -174,6 +195,11 @@ class Exploit(models.Model):
 
     def __str__(self):
         return self.name
+
+    def display_exploit_type(self):
+        if self.exploit_type == self.Type.OTHER:
+            return _custom_or_choice(self.custom_exploit_type, self.get_exploit_type_display())
+        return self.get_exploit_type_display()
 
 def screenshot_upload_path(instance, filename):
     from slugify import slugify
@@ -225,3 +251,7 @@ class Flag(models.Model):
     def __str__(self):
         return f"{self.flag_type} ({self.machine.name})"
 
+    def display_flag_type(self):
+        if self.flag_type == self.Type.OTHER:
+            return _custom_or_choice(self.custom_flag_type, self.get_flag_type_display())
+        return self.get_flag_type_display()

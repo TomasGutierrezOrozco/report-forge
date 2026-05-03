@@ -148,6 +148,9 @@ msgstr "Descripción"
 msgid "Executive Summary / Description"
 msgstr "Resumen Ejecutivo / Descripción"
 
+msgid "Executive Overview / Description"
+msgstr "Resumen Ejecutivo / Descripción"
+
 msgid "Phase"
 msgstr "Fase"
 
@@ -240,6 +243,9 @@ msgstr "Censurar en el Informe"
 
 msgid "Other"
 msgstr "Otro"
+
+msgid "other"
+msgstr "otro"
 
 msgid "Unknown"
 msgstr "Desconocido"
@@ -395,6 +401,9 @@ msgstr "Editar Máquina"
 msgid "Initialize Workspace"
 msgstr "Inicializar Entorno"
 
+msgid "Initialize Machine"
+msgstr "Inicializar Máquina"
+
 msgid "Update Machine"
 msgstr "Actualizar Máquina"
 
@@ -430,6 +439,9 @@ msgstr "Registrar Exploit"
 
 msgid "Edit Flag"
 msgstr "Editar Flag"
+
+msgid "Add Flag"
+msgstr "Añadir Flag"
 
 msgid "Capture Flag"
 msgstr "Capturar Flag"
@@ -564,3 +576,84 @@ msgstr "Captura"
 
 msgid "Flag"
 msgstr "Flag"
+
+msgid "Machines"
+msgstr "Máquinas"
+
+msgid "Export Pipeline"
+msgstr "Pipeline de Exportación"
+
+msgid "Compile and download your report directly from this page."
+msgstr "Compila y descarga tu informe directamente desde esta página."
+
+msgid "Generate LaTeX and Download PDF"
+msgstr "Generar LaTeX y Descargar PDF"
+
+msgid "This renders the latest LaTeX source, compiles it, and downloads the PDF when compilation succeeds. The `.tex` file remains in the local export folder for editing or audit."
+msgstr "Esto genera el código fuente LaTeX más reciente, lo compila y descarga el PDF cuando la compilación es exitosa. El archivo `.tex` permanece en la carpeta de exportación local para su edición o auditoría."
+
+msgid "Download PDF"
+msgstr "Descargar PDF"
+
+msgid "Download Markdown ZIP"
+msgstr "Descargar ZIP de Markdown"
+
+msgid "Exports a `report.md` file and an `assets/screenshots/` folder with the images referenced from the Markdown."
+msgstr "Exporta un archivo `report.md` y una carpeta `assets/screenshots/` con las imágenes referenciadas en el Markdown."
+
+msgid "Generate LaTeX Only"
+msgstr "Generar Solo LaTeX"
+
+msgid "Export Successful"
+msgstr "Exportación Exitosa"
+
+msgid "Export Failed"
+msgstr "Exportación Fallida"
+
+msgid "Compiler Log"
+msgstr "Log del Compilador"
+
+msgid "Pentest Flow"
+msgstr "Flujo de Pentest"
+
+msgid "+ Capture Flag"
+msgstr "+ Capturar Flag"
+
+msgid "CENSORED"
+msgstr "CENSURADO"
+
+msgid "No flags captured yet."
+msgstr "Aún no se han capturado flags."
+
+msgid "Click \"+ Capture Flag\" to record your first flag."
+msgstr "Haz clic en \"+ Capturar Flag\" para registrar tu primera flag."
+
+msgid "Unnamed Screenshot"
+msgstr "Captura sin nombre"
+
+msgid "No phase"
+msgstr "Sin fase"
+
+msgid "Delete this screenshot?"
+msgstr "¿Eliminar esta captura de pantalla?"
+
+msgid "Could not delete the screenshot."
+msgstr "No se pudo eliminar la captura de pantalla."
+
+msgid "Confirm Deletion"
+msgstr "Confirmar Eliminación"
+
+msgid "Are you absolutely sure?"
+msgstr "¿Estás completamente seguro?"
+
+msgid "You are about to delete the following item:"
+msgstr "Estás a punto de eliminar el siguiente elemento:"
+
+msgid "This action cannot be undone. All associated data will be permanently removed from the database."
+msgstr "Esta acción no se puede deshacer. Todos los datos asociados se eliminarán permanentemente de la base de datos."
+
+msgid "Yes, Delete It"
+msgstr "Sí, Eliminar"
+
+msgid "Report Forge - Local First Documentation Tool"
+msgstr "Report Forge - Herramienta de documentación local-first"

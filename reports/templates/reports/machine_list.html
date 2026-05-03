@@ -1,7 +1,7 @@
 {% extends 'reports/base.html' %}
 {% load i18n %}
 
-{% block title %}Machines - Report Forge{% endblock %}
+{% block title %}{% trans "Machines" %} - Report Forge{% endblock %}
 
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-5">
@@ -24,7 +24,7 @@
                 <div class="d-flex justify-content-between align-items-start mb-3">
                     <h4 class="mb-0 fw-bold text-white text-truncate pe-2">{{ machine.name }}</h4>
                     <span class="badge" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: 500;">
-                        {{ machine.platform }}
+                        {{ machine.display_platform }}
                     </span>
                 </div>
                 
@@ -35,11 +35,11 @@
                     </div>
                     <div class="d-flex justify-content-between align-items-center">
                         <span class="text-muted small">{% trans "OS" %}</span>
-                        <span class="text-white">{{ machine.operating_system }}</span>
+                        <span class="text-white">{{ machine.display_operating_system }}</span>
                     </div>
                     <div class="d-flex justify-content-between align-items-center">
                         <span class="text-muted small">{% trans "Difficulty" %}</span>
-                        <span class="text-white">{{ machine.difficulty }}</span>
+                        <span class="text-white">{{ machine.get_difficulty_display }}</span>
                     </div>
                     <div class="d-flex justify-content-between align-items-center mt-2 pt-2 border-top" style="border-color: var(--ctf-card-border) !important;">
                         <span class="text-muted small">{% trans "Status" %}</span>
@@ -48,7 +48,7 @@
                         {% elif machine.status == 'In Progress' %}
                             <span class="badge bg-warning bg-opacity-25 text-warning border border-warning">{% trans "In Progress" %}</span>
                         {% else %}
-                            <span class="badge bg-secondary bg-opacity-25 text-secondary border border-secondary">{{ machine.status }}</span>
+                            <span class="badge bg-secondary bg-opacity-25 text-secondary border border-secondary">{{ machine.get_status_display }}</span>
                         {% endif %}
                     </div>
                 </div>

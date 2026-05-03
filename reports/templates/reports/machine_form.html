@@ -13,7 +13,7 @@
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--ctf-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
             </div>
             <div>
-                <h2 class="mb-1 fw-bold text-white">{% if form.instance.pk %}Edit Machine: {{ form.instance.name }}{% else %}Initialize Machine{% endif %}</h2>
+                <h2 class="mb-1 fw-bold text-white">{% if form.instance.pk %}{% trans "Edit Machine" %}: {{ form.instance.name }}{% else %}{% trans "Initialize Machine" %}{% endif %}</h2>
                 <p class="text-muted mb-0">{% trans "Configure the workspace for this engagement." %}</p>
             </div>
         </div>
@@ -74,7 +74,7 @@
                         {{ form.report_language }}
                     </div>
                     <div class="col-md-6">
-                        <label for="{{ form.report_type.id_for_label }}" class="form-label text-white">Report {% trans "Type" %}</label>
+                        <label for="{{ form.report_type.id_for_label }}" class="form-label text-white">{% trans "Report Type" %}</label>
                         {{ form.report_type }}
                     </div>
                 </div>
@@ -105,7 +105,7 @@
                 <div class="d-flex justify-content-end gap-3 pt-3 border-top" style="border-color: var(--ctf-card-border) !important;">
                     <a href="{% if form.instance.pk %}{% url 'reports:machine_detail' form.instance.pk %}{% else %}{% url 'reports:machine_list' %}{% endif %}" class="btn" style="background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1);">{% trans "Cancel" %}</a>
                     <button type="submit" class="btn btn-primary-custom px-4">
-                        {% if form.instance.pk %}{% trans "Update Machine" %}{% else %}{% trans "Initialize Workspace" %}{% endif %}
+                        {% if form.instance.pk %}{% trans "Update Machine" %}{% else %}{% trans "Initialize Machine" %}{% endif %}
                     </button>
                 </div>
             </form>

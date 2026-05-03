@@ -20,6 +20,22 @@ class MachineViewsTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "ViewTestBox")
 
+    def test_machine_list_uses_active_language_for_choice_labels(self):
+        self.machine.platform = Machine.Platform.OTHER
+        self.machine.difficulty = Machine.Difficulty.EASY
+        self.machine.operating_system = Machine.OS.OTHER
+        self.machine.save()
+
+        response = self.client.get(
+            reverse("reports:machine_list"),
+            HTTP_ACCEPT_LANGUAGE="es",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Otro")
+        self.assertContains(response, "Fácil")
+        self.assertNotContains(response, ">Other<")
+        self.assertNotContains(response, ">Easy<")
+
     def test_machine_detail_view(self):
         response = self.client.get(
             reverse("reports:machine_detail", args=[self.machine.pk])
@@ -73,6 +89,21 @@ class MachineViewsTest(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertFalse(Machine.objects.filter(pk=pk).exists())
 
+    def test_machine_delete_confirmation_uses_active_language(self):
+        self.machine.platform = Machine.Platform.OTHER
+        self.machine.save()
+
+        response = self.client.get(
+            reverse("reports:machine_delete", args=[self.machine.pk]),
+            HTTP_ACCEPT_LANGUAGE="es",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "¿Estás completamente seguro?")
+        self.assertContains(response, "Estás a punto de eliminar el siguiente elemento:")
+        self.assertContains(response, "ViewTestBox (Otro)")
+        self.assertNotContains(response, "Are you absolutely sure?")
+        self.assertNotContains(response, "Yes, Delete It")
+
     def test_nonexistent_machine_returns_404(self):
         response = self.client.get(
             reverse("reports:machine_detail", args=[99999])
@@ -93,6 +124,16 @@ class EvidenceViewsTest(TestCase):
         )
         self.assertEqual(response.status_code, 200)
 
+    def test_evidence_create_modal_title_uses_active_language(self):
+        response = self.client.get(
+            reverse("reports:evidence_create", args=[self.machine.pk]),
+            HTTP_HX_REQUEST="true",
+            HTTP_ACCEPT_LANGUAGE="es",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Añadir Evidencia")
+        self.assertNotContains(response, "Add Evidence")
+
     def test_evidence_create_post(self):
         response = self.client.post(
             reverse("reports:evidence_create", args=[self.machine.pk]),
@@ -107,6 +148,24 @@ class EvidenceViewsTest(TestCase):
         )
         self.assertEqual(response.status_code, 302)
         self.assertEqual(self.machine.evidences.count(), 1)
+
+
+class FlagViewsTest(TestCase):
+    """Tests for flag form translations."""
+
+    def setUp(self):
+        self.client = Client()
+        self.machine = Machine.objects.create(name="FlagBox")
+
+    def test_flag_create_modal_title_uses_active_language(self):
+        response = self.client.get(
+            reverse("reports:flag_create", args=[self.machine.pk]),
+            HTTP_HX_REQUEST="true",
+            HTTP_ACCEPT_LANGUAGE="es",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Añadir Flag")
+        self.assertNotContains(response, "Add Flag")
 
 
 class ExportViewsTest(TestCase):
@@ -125,6 +184,15 @@ class ExportViewsTest(TestCase):
             reverse("reports:export_view", args=[self.machine.pk])
         )
         self.assertEqual(response.status_code, 200)
+
+    def test_export_view_uses_active_language(self):
+        response = self.client.get(
+            reverse("reports:export_view", args=[self.machine.pk]),
+            HTTP_ACCEPT_LANGUAGE="es",
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Generar LaTeX y Descargar PDF")
+        self.assertNotContains(response, "Generate LaTeX and Download PDF")
 
     def test_export_markdown_returns_zip(self):
         response = self.client.get(

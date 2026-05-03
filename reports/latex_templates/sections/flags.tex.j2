@@ -3,7 +3,7 @@
 \BLOCK{ if flags }
     \begin{itemize}
     \BLOCK{ for flag in flags }
-        \item \textbf{\VAR{ flag.flag_type | escape_tex }}: 
+        \item \textbf{\VAR{ flag.display_flag_type() | escape_tex }}: 
         \BLOCK{ if flag.censored }
             \texttt{\VAR{ i18n.censored }}
         \BLOCK{ else }

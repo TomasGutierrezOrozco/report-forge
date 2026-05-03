@@ -1,6 +1,7 @@
 import os
 import jinja2
 from django.conf import settings
+from django.utils import translation
 from .filesystem import get_export_dir, copy_screenshots_to_export
 from .latex_escape import escape_latex
 from .i18n import get_i18n
@@ -99,7 +100,8 @@ def render_machine_to_latex(machine):
     
     try:
         template = env.get_template(template_name)
-        rendered_latex = template.render(**context)
+        with translation.override(machine.report_language):
+            rendered_latex = template.render(**context)
     except jinja2.exceptions.TemplateNotFound as e:
         raise Exception(f"LaTeX template not found: {e}. Please ensure the latex_templates directory is properly populated.")
     

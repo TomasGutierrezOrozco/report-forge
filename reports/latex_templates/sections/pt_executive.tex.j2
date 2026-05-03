@@ -13,8 +13,8 @@
 \BLOCK{ if machine.client_name }
 \textbf{\VAR{ i18n.client }}        & \VAR{ machine.client_name | escape_tex } \\ \hline
 \BLOCK{ endif }
-\textbf{\VAR{ i18n.platform }}      & \VAR{ machine.platform | escape_tex } \\ \hline
-\textbf{\VAR{ i18n.difficulty }}    & \VAR{ machine.difficulty | escape_tex } \\ \hline
+\textbf{\VAR{ i18n.platform }}      & \VAR{ machine.display_platform() | escape_tex } \\ \hline
+\textbf{\VAR{ i18n.difficulty }}    & \VAR{ machine.get_difficulty_display() | escape_tex } \\ \hline
 \textbf{\VAR{ i18n.target_ip }}     & \VAR{ machine.target_ip | escape_tex } \\ \hline
 \textbf{\VAR{ i18n.author_label }}  & \VAR{ machine.author | escape_tex } \\ \hline
 \end{tabular}

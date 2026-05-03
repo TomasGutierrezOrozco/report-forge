@@ -6,7 +6,7 @@
 \BLOCK{ if vulnerabilities }
     \begin{itemize}
     \BLOCK{ for vuln in vulnerabilities }
-        \item \VAR{ vuln.title | escape_tex } (\VAR{ vuln.severity | escape_tex })
+        \item \VAR{ vuln.title | escape_tex } (\VAR{ vuln.get_severity_display() | escape_tex })
     \BLOCK{ endfor }
     \end{itemize}
 \BLOCK{ else }
