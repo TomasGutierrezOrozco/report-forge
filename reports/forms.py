@@ -37,7 +37,7 @@ class BaseStyledForm(forms.ModelForm):
 class MachineForm(BaseStyledForm):
     class Meta:
         model = Machine
-        fields = ['name', 'platform', 'difficulty', 'operating_system', 'target_ip', 'author', 'status', 'report_language', 'report_type', 'client_name', 'scope', 'description']
+        fields = ['name', 'platform', 'custom_platform', 'difficulty', 'operating_system', 'custom_operating_system', 'target_ip', 'author', 'status', 'report_language', 'report_type', 'client_name', 'scope', 'description']
         widgets = {
             'description': forms.Textarea(attrs={'rows': 4}),
             'scope': forms.Textarea(attrs={'rows': 3}),
@@ -61,7 +61,7 @@ class VulnerabilityForm(BaseStyledForm):
     class Meta:
         model = Vulnerability
         fields = [
-            'title', 'vulnerability_type', 'severity', 'affected_service', 
+            'title', 'vulnerability_type', 'custom_vulnerability_type', 'severity', 'affected_service', 
             'affected_port', 'cve', 'how_identified', 'evidence', 
             'impact', 'recommendation', 'order'
         ]
@@ -78,7 +78,7 @@ class ExploitForm(BaseStyledForm):
     class Meta:
         model = Exploit
         fields = [
-            'name', 'vulnerability', 'exploit_type', 'objective', 
+            'name', 'vulnerability', 'exploit_type', 'custom_exploit_type', 'objective', 
             'cve', 'url', 'local_path', 'affected_service', 'affected_port',
             'command_used', 'output', 'result', 'explanation', 'order'
         ]
@@ -128,7 +128,7 @@ class ScreenshotForm(BaseStyledForm):
 class FlagForm(BaseStyledForm):
     class Meta:
         model = Flag
-        fields = ['flag_type', 'phase', 'value', 'location', 'obtained_as_user', 'found_commands', 'notes', 'censored']
+        fields = ['flag_type', 'custom_flag_type', 'phase', 'value', 'location', 'obtained_as_user', 'found_commands', 'notes', 'censored']
         widgets = {
             'found_commands': forms.Textarea(attrs={'rows': 3, 'class': 'font-monospace'}),
             'notes': forms.Textarea(attrs={'rows': 3}),

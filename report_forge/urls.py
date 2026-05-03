@@ -8,6 +8,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('machines/', include('reports.urls')),
     path('', RedirectView.as_view(url='/machines/', permanent=False)),
+    path('i18n/', include('django.conf.urls.i18n')),
 ]
 
 if settings.DEBUG:

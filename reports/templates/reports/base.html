@@ -1,4 +1,4 @@
-{% load static %}
+{% load static i18n %}
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
 <head>
@@ -222,12 +222,31 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link px-3" href="{% url 'reports:machine_list' %}">Machines Dashboard</a>
+                    <a class="nav-link px-3" href="{% url 'reports:machine_list' %}">{% trans "Machines Dashboard" %}</a>
                 </li>
             </ul>
+            
+            <form action="{% url 'set_language' %}" method="post" class="d-flex align-items-center me-3" id="lang-form">
+                {% csrf_token %}
+                <input name="next" type="hidden" value="{{ redirect_to }}">
+                {% get_current_language as LANGUAGE_CODE %}
+                <div class="btn-group btn-group-sm" role="group" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 2px;">
+                    <button type="submit" name="language" value="en" 
+                            class="btn px-3 py-1 border-0 {% if LANGUAGE_CODE == 'en' %}btn-primary-custom{% else %}text-muted{% endif %}" 
+                            style="border-radius: 6px; font-size: 0.8rem; font-weight: 600; box-shadow: {% if LANGUAGE_CODE == 'en' %}0 2px 8px rgba(0,229,255,0.3){% else %}none{% endif %}; background-color: {% if LANGUAGE_CODE == 'en' %}var(--ctf-primary){% else %}transparent{% endif %};">
+                        EN
+                    </button>
+                    <button type="submit" name="language" value="es" 
+                            class="btn px-3 py-1 border-0 {% if LANGUAGE_CODE == 'es' %}btn-primary-custom{% else %}text-muted{% endif %}" 
+                            style="border-radius: 6px; font-size: 0.8rem; font-weight: 600; box-shadow: {% if LANGUAGE_CODE == 'es' %}0 2px 8px rgba(0,229,255,0.3){% else %}none{% endif %}; background-color: {% if LANGUAGE_CODE == 'es' %}var(--ctf-primary){% else %}transparent{% endif %};">
+                        ES
+                    </button>
+                </div>
+            </form>
+
             <a href="{% url 'reports:machine_create' %}" class="btn btn-primary-custom d-flex align-items-center gap-2">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                New Machine
+                {% trans "New Machine" %}
             </a>
         </div>
     </div>
@@ -273,6 +292,8 @@
 <script src="{% static 'reports/js/bootstrap.bundle.min.js' %}"></script>
 <!-- HTMX (local) -->
 <script src="{% static 'reports/js/htmx.min.js' %}"></script>
+<!-- Other Toggle Script -->
+<script src="{% static 'reports/js/other-toggle.js' %}"></script>
 
 <script>
     // Handle HTMX Modal Logic

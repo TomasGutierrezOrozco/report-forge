@@ -1,5 +1,5 @@
 {% extends 'reports/base.html' %}
-{% load static %}
+{% load static i18n %}
 
 {% block title %}{{ machine.name }} - Report Forge{% endblock %}
 
@@ -23,10 +23,10 @@
         </div>
     </div>
     <div class="col-md-6 d-flex justify-content-md-end gap-2 mt-3 mt-md-0 flex-wrap">
-        <a href="{% url 'reports:machine_edit' machine.pk %}" class="btn px-4" style="background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1);">Edit Data</a>
+        <a href="{% url 'reports:machine_edit' machine.pk %}" class="btn px-4" style="background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.1);">{% trans "Edit Data" %}</a>
         <a href="{% url 'reports:export_view' machine.pk %}" class="btn btn-primary-custom px-4 d-flex align-items-center gap-2">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
-            Export Report
+            {% trans "Export Report" %}
         </a>
         <a href="{% url 'reports:machine_delete' machine.pk %}" class="btn d-flex align-items-center gap-2" style="background: rgba(255,77,77,0.05); color: #ff4d4d; border: 1px solid rgba(255,77,77,0.2);">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
@@ -38,11 +38,11 @@
     <div class="col-12">
         <div class="card p-2" style="background: rgba(0,229,255,0.02); border-color: rgba(0,229,255,0.1);">
             <div class="d-flex gap-2 overflow-auto flex-nowrap" style="scrollbar-width: none;">
-                <button hx-get="{% url 'reports:evidence_create' machine.pk %}" hx-target="#dialog" class="btn btn-outline-primary-custom text-nowrap flex-grow-1">+ Evidence</button>
-                <button hx-get="{% url 'reports:vulnerability_create' machine.pk %}" hx-target="#dialog" class="btn text-nowrap flex-grow-1" style="color: #ff4d4d; border-color: #ff4d4d;">+ Vulnerability</button>
-                <button hx-get="{% url 'reports:exploit_create' machine.pk %}" hx-target="#dialog" class="btn text-nowrap flex-grow-1" style="color: #ffcc00; border-color: #ffcc00;">+ Exploit</button>
-                <button hx-get="{% url 'reports:screenshot_create' machine.pk %}" hx-target="#dialog" class="btn text-nowrap flex-grow-1" style="color: #33ccff; border-color: #33ccff;">+ Screenshot</button>
-                <button hx-get="{% url 'reports:flag_create' machine.pk %}" hx-target="#dialog" class="btn text-nowrap flex-grow-1" style="color: #ff33cc; border-color: #ff33cc;">+ Flag</button>
+                <button hx-get="{% url 'reports:evidence_create' machine.pk %}" hx-target="#dialog" class="btn btn-outline-primary-custom text-nowrap flex-grow-1">+ {% trans "Evidence" %}</button>
+                <button hx-get="{% url 'reports:vulnerability_create' machine.pk %}" hx-target="#dialog" class="btn text-nowrap flex-grow-1" style="color: #ff4d4d; border-color: #ff4d4d;">+ {% trans "Vulnerability" %}</button>
+                <button hx-get="{% url 'reports:exploit_create' machine.pk %}" hx-target="#dialog" class="btn text-nowrap flex-grow-1" style="color: #ffcc00; border-color: #ffcc00;">+ {% trans "Exploit" %}</button>
+                <button hx-get="{% url 'reports:screenshot_create' machine.pk %}" hx-target="#dialog" class="btn text-nowrap flex-grow-1" style="color: #33ccff; border-color: #33ccff;">+ {% trans "Screenshot" %}</button>
+                <button hx-get="{% url 'reports:flag_create' machine.pk %}" hx-target="#dialog" class="btn text-nowrap flex-grow-1" style="color: #ff33cc; border-color: #ff33cc;">+ {% trans "Flag" %}</button>
             </div>
         </div>
     </div>
@@ -55,34 +55,34 @@
             <div class="list-group-item bg-transparent text-muted small fw-bold text-uppercase" style="border:none; padding-left:0;">Pentest Flow</div>
             
             <a href="#phase_reconnaissance" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" style="background: rgba(255,255,255,0.03); border: 1px solid var(--ctf-card-border); border-bottom: none; color: #fff;">
-                1. Reconnaissance
+                1. {% trans "Reconnaissance" %}
             </a>
             <a href="#phase_vulnerability_identification" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" style="background: rgba(255,77,77,0.02); border: 1px solid var(--ctf-card-border); border-bottom: none; color: #94A3B8;">
-                2. Vulnerability ID
+                2. {% trans "Vulnerability ID" %}
                 {% if vulnerabilities %}<span class="badge" style="background: #ff4d4d; color: #fff;">{{ vulnerabilities.count }}</span>{% endif %}
             </a>
             <a href="#phase_exploitation" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" style="background: rgba(255,204,0,0.02); border: 1px solid var(--ctf-card-border); border-bottom: none; color: #94A3B8;">
-                3. Exploitation
+                3. {% trans "Exploitation" %}
                 {% if exploits %}<span class="badge" style="background: #ffcc00; color: #000;">{{ exploits.count }}</span>{% endif %}
             </a>
             <a href="#phase_internal_reconnaissance" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" style="background: rgba(255,255,255,0.01); border: 1px solid var(--ctf-card-border); border-bottom: none; color: #94A3B8;">
-                4. Internal Recon
+                4. {% trans "Internal Recon" %}
             </a>
             <a href="#phase_user_movement" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" style="background: rgba(255,255,255,0.01); border: 1px solid var(--ctf-card-border); border-bottom: none; color: #94A3B8;">
-                5. User Movement
+                5. {% trans "User Movement" %}
             </a>
             <a href="#phase_privilege_escalation" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" style="background: rgba(255,255,255,0.01); border: 1px solid var(--ctf-card-border); border-bottom: none; color: #94A3B8;">
-                6. Privilege Escalation
+                6. {% trans "Privilege Escalation" %}
             </a>
             <a href="#section_flags" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" style="background: rgba(255,51,204,0.04); border: 1px solid var(--ctf-card-border); border-bottom: none; color: #ff33cc;">
-                7. Flags Captured
+                7. {% trans "Flags Captured" %}
                 {% if flags %}<span class="badge" style="background: #ff33cc; color: #fff;">{{ flags.count }}</span>{% endif %}
             </a>
             <a href="#phase_notes" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" style="background: rgba(255,255,255,0.01); border: 1px solid var(--ctf-card-border); border-bottom: none; color: #94A3B8;">
-                8. Notes
+                8. {% trans "Notes" %}
             </a>
             <a href="#screenshots" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" style="background: rgba(51,204,255,0.05); border: 1px solid var(--ctf-card-border); color: #fff;">
-                Screenshot Gallery
+                {% trans "Screenshot Gallery" %}
                 {% if screenshots %}<span class="badge" style="background: #33ccff; color: #000;">{{ screenshots.count }}</span>{% endif %}
             </a>
         </div>
@@ -91,7 +91,7 @@
     <div class="col-xl-9 pe-xl-4">
         {% if machine.description %}
             <div class="card mb-5 border-0 bg-transparent shadow-none" style="backdrop-filter: none;">
-                <h5 class="text-white mb-3">Executive Summary / Description</h5>
+                <h5 class="text-white mb-3">{% trans "Executive Summary / Description" %}</h5>
                 <p class="text-muted lh-lg">{{ machine.description }}</p>
             </div>
         {% endif %}
@@ -106,7 +106,7 @@
                         {{ phase_data.name }}
                     </h3>
                     <div class="flex-grow-1 border-bottom" style="border-color: var(--ctf-card-border) !important;"></div>
-                    <button hx-get="{% url 'reports:evidence_create' machine.pk %}?phase={{ phase_key }}" hx-target="#dialog" class="btn btn-sm btn-outline-secondary px-3 rounded-pill">+ Add Evidence</button>
+                    <button hx-get="{% url 'reports:evidence_create' machine.pk %}?phase={{ phase_key }}" hx-target="#dialog" class="btn btn-sm btn-outline-secondary px-3 rounded-pill">+ {% trans "Add Evidence" %}</button>
                 </div>
                 
                 <div class="timeline position-relative ps-4" style="border-left: 2px solid rgba(255,255,255,0.1);">
@@ -192,12 +192,12 @@
                             <div class="card-body pt-0">
                                 <div class="row g-3 mb-4 pb-3 border-bottom" style="border-color: rgba(255,255,255,0.05) !important;">
                                     <div class="col-md-6">
-                                        <div class="text-muted small mb-1">Exploit Type</div>
+                                        <div class="text-muted small mb-1">Exploit {% trans "Type" %}</div>
                                         <div class="text-white">{{ exploit.exploit_type }}</div>
                                     </div>
                                     {% if exploit.cve %}
                                     <div class="col-md-6">
-                                        <div class="text-muted small mb-1">CVE</div>
+                                        <div class="text-muted small mb-1">{% trans "CVE" %}</div>
                                         <div class="text-warning font-monospace">{{ exploit.cve }}</div>
                                     </div>
                                     {% endif %}
@@ -216,7 +216,7 @@
                                 </div>
 
                                 {% if exploit.explanation %}
-                                    <h6 class="text-muted fw-bold mb-2 text-uppercase" style="font-size: 0.8rem; letter-spacing: 1px;">Explanation</h6>
+                                    <h6 class="text-muted fw-bold mb-2 text-uppercase" style="font-size: 0.8rem; letter-spacing: 1px;">{% trans "Explanation" %}</h6>
                                     <p class="mb-4 lh-lg" style="color: #cbd5e1;">{{ exploit.explanation|linebreaksbr }}</p>
                                 {% endif %}
 
@@ -226,7 +226,7 @@
                                 {% endif %}
 
                                 {% if exploit.output %}
-                                    <h6 class="text-muted fw-bold mb-2 text-uppercase" style="font-size: 0.8rem; letter-spacing: 1px;">Output</h6>
+                                    <h6 class="text-muted fw-bold mb-2 text-uppercase" style="font-size: 0.8rem; letter-spacing: 1px;">{% trans "Output" %}</h6>
                                     <pre class="mb-4"><code>{{ exploit.output }}</code></pre>
                                 {% endif %}
 
@@ -280,7 +280,7 @@
                                 {% endif %}
                                 
                                 {% if evidence.output %}
-                                    <h6 class="text-muted fw-bold mb-2 text-uppercase" style="font-size: 0.8rem; letter-spacing: 1px;">Output</h6>
+                                    <h6 class="text-muted fw-bold mb-2 text-uppercase" style="font-size: 0.8rem; letter-spacing: 1px;">{% trans "Output" %}</h6>
                                     <pre class="mb-4"><code>{{ evidence.output }}</code></pre>
                                 {% endif %}
 
@@ -319,15 +319,15 @@
                 {% if not phase_data.evidences %}
                     {% if phase_key == 'vulnerability_identification' and not vulnerabilities %}
                         <div class="card bg-transparent border-0 shadow-none p-2 mb-4" style="border: 1px dashed var(--ctf-card-border) !important;">
-                            <p class="text-muted mb-0 small ms-2">No data recorded for this phase.</p>
+                            <p class="text-muted mb-0 small ms-2">{% trans "No data recorded for this phase." %}</p>
                         </div>
                     {% elif phase_key == 'exploitation' and not exploits %}
                         <div class="card bg-transparent border-0 shadow-none p-2 mb-4" style="border: 1px dashed var(--ctf-card-border) !important;">
-                            <p class="text-muted mb-0 small ms-2">No data recorded for this phase.</p>
+                            <p class="text-muted mb-0 small ms-2">{% trans "No data recorded for this phase." %}</p>
                         </div>
                     {% elif phase_key != 'vulnerability_identification' and phase_key != 'exploitation' %}
                         <div class="card bg-transparent border-0 shadow-none p-2 mb-4" style="border: 1px dashed var(--ctf-card-border) !important;">
-                            <p class="text-muted mb-0 small ms-2">No data recorded for this phase.</p>
+                            <p class="text-muted mb-0 small ms-2">{% trans "No data recorded for this phase." %}</p>
                         </div>
                     {% endif %}
                 {% endif %}
@@ -338,7 +338,7 @@
 
         <!-- 7. Flags Captured Section -->
         <div id="section_flags" class="d-flex align-items-center gap-3 mb-4 mt-5">
-            <h3 class="mb-0 fw-bold" style="color: #ff33cc;">7. Flags Captured</h3>
+            <h3 class="mb-0 fw-bold" style="color: #ff33cc;">7. {% trans "Flags Captured" %}</h3>
             <div class="flex-grow-1 border-bottom" style="border-color: rgba(255,51,204,0.2) !important;"></div>
             <button hx-get="{% url 'reports:flag_create' machine.pk %}" hx-target="#dialog"
                 class="btn btn-sm px-3 rounded-pill"
@@ -429,7 +429,7 @@
             <div class="d-flex align-items-center gap-3 mb-4">
                 <h3 id="phase_notes" class="mb-0 text-white fw-bold">8. {{ notes_phase.name }}</h3>
                 <div class="flex-grow-1 border-bottom" style="border-color: var(--ctf-card-border) !important;"></div>
-                <button hx-get="{% url 'reports:evidence_create' machine.pk %}?phase=notes" hx-target="#dialog" class="btn btn-sm btn-outline-secondary px-3 rounded-pill">+ Add Evidence</button>
+                <button hx-get="{% url 'reports:evidence_create' machine.pk %}?phase=notes" hx-target="#dialog" class="btn btn-sm btn-outline-secondary px-3 rounded-pill">+ {% trans "Add Evidence" %}</button>
             </div>
 
             <div class="timeline position-relative ps-4" style="border-left: 2px solid rgba(255,255,255,0.1);">
@@ -456,7 +456,7 @@
                                     <pre class="mb-4"><code class="language-bash">{{ evidence.command }}</code></pre>
                                 {% endif %}
                                 {% if evidence.output %}
-                                    <h6 class="text-muted fw-bold mb-2 text-uppercase" style="font-size: 0.8rem; letter-spacing: 1px;">Output</h6>
+                                    <h6 class="text-muted fw-bold mb-2 text-uppercase" style="font-size: 0.8rem; letter-spacing: 1px;">{% trans "Output" %}</h6>
                                     <pre class="mb-4"><code>{{ evidence.output }}</code></pre>
                                 {% endif %}
                             </div>
@@ -465,7 +465,7 @@
                     </div>
                 {% else %}
                     <div class="card bg-transparent border-0 shadow-none p-2 mb-4" style="border: 1px dashed var(--ctf-card-border) !important;">
-                        <p class="text-muted mb-0 small ms-2">No data recorded for this phase.</p>
+                        <p class="text-muted mb-0 small ms-2">{% trans "No data recorded for this phase." %}</p>
                     </div>
                 {% endif %}
             </div>
@@ -473,7 +473,7 @@
 
         <!-- All Screenshots Gallery Section -->
         <div id="screenshots" class="d-flex align-items-center gap-3 mb-4 mt-5">
-            <h3 class="mb-0 text-white fw-bold">Screenshot Gallery</h3>
+            <h3 class="mb-0 text-white fw-bold">{% trans "Screenshot Gallery" %}</h3>
             <div class="flex-grow-1 border-bottom" style="border-color: var(--ctf-card-border) !important;"></div>
         </div>
         
@@ -499,7 +499,7 @@
             </div>
         {% else %}
             <div class="card bg-transparent border-0 shadow-none mb-5 text-center p-4" style="border: 1px dashed var(--ctf-card-border) !important;">
-                <p class="text-muted mb-0">No screenshots uploaded yet.</p>
+                <p class="text-muted mb-0">{% trans "No screenshots uploaded yet." %}</p>
             </div>
         {% endif %}
 
@@ -684,7 +684,7 @@ hljs.highlightAll();
                 const column = wrapper?.closest('[class*="col-"]');
                 if (column) {
                     column.remove();
-                } else if (wrapper) {
+                %} else if (wrapper) {
                     wrapper.remove();
                 }
             }).catch(() => {

@@ -1,0 +1,566 @@
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.0\n"
+"Report-Msgid-Bugs-To: you@example.com\n"
+"POT-Creation-Date: 2023-01-01 12:00+0000\n"
+"PO-Revision-Date: 2023-01-01 12:00+0000\n"
+"Last-Translator: you <you@example.com>\n"
+"Language-Team: Spanish <yourteam@example.com>\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Machines Dashboard"
+msgstr "Panel de Máquinas"
+
+msgid "New Machine"
+msgstr "Nueva Máquina"
+
+msgid "Manage and document your CTF and pentest environments."
+msgstr "Gestiona y documenta tus entornos de CTF y pentest."
+
+msgid "IP Address"
+msgstr "Dirección IP"
+
+msgid "OS"
+msgstr "SO"
+
+msgid "Difficulty"
+msgstr "Dificultad"
+
+msgid "Status"
+msgstr "Estado"
+
+msgid "Completed"
+msgstr "Completado"
+
+msgid "In Progress"
+msgstr "En Progreso"
+
+msgid "Paused"
+msgstr "Pausado"
+
+msgid "View Details"
+msgstr "Ver Detalles"
+
+msgid "Edit Data"
+msgstr "Editar Datos"
+
+msgid "Export"
+msgstr "Exportar"
+
+msgid "Delete Machine"
+msgstr "Eliminar Máquina"
+
+msgid "No machines documented yet"
+msgstr "Aún no hay máquinas documentadas"
+
+msgid ""
+"Start your first report by creating a new machine documentation workspace."
+msgstr "Comienza tu primer informe creando un nuevo espacio de trabajo."
+
+msgid "Create First Machine"
+msgstr "Crear Primera Máquina"
+
+msgid "Export Report"
+msgstr "Exportar Informe"
+
+msgid "Reconnaissance"
+msgstr "Reconocimiento"
+
+msgid "Vulnerability ID"
+msgstr "ID de Vulnerabilidad"
+
+msgid "Vulnerability Identification"
+msgstr "Identificación de Vulnerabilidades"
+
+msgid "Exploitation"
+msgstr "Explotación"
+
+msgid "Internal Recon"
+msgstr "Reconocimiento Interno"
+
+msgid "Internal Reconnaissance"
+msgstr "Reconocimiento Interno"
+
+msgid "User Movement"
+msgstr "Movimiento de Usuario"
+
+msgid "Privilege Escalation"
+msgstr "Escalada de Privilegios"
+
+msgid "Flags Captured"
+msgstr "Flags Capturadas"
+
+msgid "Notes"
+msgstr "Notas"
+
+msgid "Screenshot Gallery"
+msgstr "Galería de Capturas"
+
+msgid "No screenshots uploaded yet."
+msgstr "Aún no se han subido capturas de pantalla."
+
+msgid "Name"
+msgstr "Nombre"
+
+msgid "Platform"
+msgstr "Plataforma"
+
+msgid "Custom Platform"
+msgstr "Plataforma Personalizada"
+
+msgid "Operating System"
+msgstr "Sistema Operativo"
+
+msgid "Custom OS"
+msgstr "SO Personalizado"
+
+msgid "Target IP"
+msgstr "IP Objetivo"
+
+msgid "Author"
+msgstr "Autor"
+
+msgid "Report Language"
+msgstr "Idioma del Informe"
+
+msgid "Report Type"
+msgstr "Tipo de Informe"
+
+msgid "Client Name"
+msgstr "Nombre del Cliente"
+
+msgid "Company/client name (for Pentest/Bug Bounty reports)"
+msgstr "Nombre de la empresa/cliente"
+
+msgid "Scope"
+msgstr "Alcance"
+
+msgid "Scope of the engagement (URLs, IP ranges, etc.)"
+msgstr "Alcance de la auditoría (URLs, IPs, etc.)"
+
+msgid "Description"
+msgstr "Descripción"
+
+msgid "Executive Summary / Description"
+msgstr "Resumen Ejecutivo / Descripción"
+
+msgid "Phase"
+msgstr "Fase"
+
+msgid "Title"
+msgstr "Título"
+
+msgid "Command"
+msgstr "Comando"
+
+msgid "Output"
+msgstr "Salida"
+
+msgid "Explanation"
+msgstr "Explicación"
+
+msgid "Order"
+msgstr "Orden"
+
+msgid "Affected Service"
+msgstr "Servicio Afectado"
+
+msgid "Affected Port"
+msgstr "Puerto Afectado"
+
+msgid "Type"
+msgstr "Tipo"
+
+msgid "Custom Type"
+msgstr "Tipo Personalizado"
+
+msgid "Severity"
+msgstr "Severidad"
+
+msgid "CVE"
+msgstr "CVE"
+
+msgid "How was it identified?"
+msgstr "¿Cómo se identificó?"
+
+msgid "Evidence / Proof of Concept"
+msgstr "Evidencia / PoC"
+
+msgid "Technical Impact"
+msgstr "Impacto Técnico"
+
+msgid "Remediation / Recommendation"
+msgstr "Remediación / Recomendación"
+
+msgid "Vulnerability"
+msgstr "Vulnerabilidad"
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Local Path"
+msgstr "Ruta Local"
+
+msgid "Objective"
+msgstr "Objetivo"
+
+msgid "Command Used"
+msgstr "Comando Usado"
+
+msgid "Result"
+msgstr "Resultado"
+
+msgid "Flag Type"
+msgstr "Tipo de Flag"
+
+msgid "Value"
+msgstr "Valor"
+
+msgid "Location / Path"
+msgstr "Ubicación / Ruta"
+
+msgid "Obtained as User"
+msgstr "Obtenido como Usuario"
+
+msgid "Command(s) Used"
+msgstr "Comando(s) Usado(s)"
+
+msgid "Commands used to obtain this flag"
+msgstr "Comandos usados para obtener esta flag"
+
+msgid "Additional Notes"
+msgstr "Notas Adicionales"
+
+msgid "Censor in Report"
+msgstr "Censurar en el Informe"
+
+msgid "Other"
+msgstr "Otro"
+
+msgid "Unknown"
+msgstr "Desconocido"
+
+msgid "Easy"
+msgstr "Fácil"
+
+msgid "Medium"
+msgstr "Medio"
+
+msgid "Hard"
+msgstr "Difícil"
+
+msgid "Insane"
+msgstr "Locura"
+
+msgid "English"
+msgstr "Inglés"
+
+msgid "Español"
+msgstr "Español"
+
+msgid "CTF / HackTheBox / TryHackMe"
+msgstr "CTF / HackTheBox / TryHackMe"
+
+msgid "Bug Bounty Report"
+msgstr "Reporte de Bug Bounty"
+
+msgid "Penetration Test (Corporate)"
+msgstr "Test de Penetración (Corporativo)"
+
+msgid "SQL Injection"
+msgstr "Inyección SQL"
+
+msgid "Command Injection"
+msgstr "Inyección de Comandos"
+
+msgid "File Upload"
+msgstr "Subida de Archivos"
+
+msgid "Path Traversal"
+msgstr "Path Traversal"
+
+msgid "Weak Credentials"
+msgstr "Credenciales Débiles"
+
+msgid "Exposed Backup"
+msgstr "Backup Expuesto"
+
+msgid "Kernel Exploit"
+msgstr "Exploit de Kernel"
+
+msgid "SUID Misconfiguration"
+msgstr "Mala Configuración SUID"
+
+msgid "Sudo Privileges"
+msgstr "Privilegios Sudo"
+
+msgid "Misconfigured Service"
+msgstr "Servicio Mal Configurado"
+
+msgid "Known CVE"
+msgstr "CVE Conocido"
+
+msgid "Info"
+msgstr "Info"
+
+msgid "Low"
+msgstr "Bajo"
+
+msgid "High"
+msgstr "Alto"
+
+msgid "Critical"
+msgstr "Crítico"
+
+msgid "Manual Technique"
+msgstr "Técnica Manual"
+
+msgid "Custom Exploit"
+msgstr "Exploit Personalizado"
+
+msgid "GitHub Repository"
+msgstr "Repositorio de GitHub"
+
+msgid "Metasploit Module"
+msgstr "Módulo de Metasploit"
+
+msgid "Public PoC"
+msgstr "PoC Público"
+
+msgid "Initial Access"
+msgstr "Acceso Inicial"
+
+msgid "Remote Code Execution"
+msgstr "Ejecución Remota de Código"
+
+msgid "Credential Disclosure"
+msgstr "Divulgación de Credenciales"
+
+msgid "User Pivot"
+msgstr "Pivote de Usuario"
+
+msgid "Proof of Concept"
+msgstr "Prueba de Concepto"
+
+msgid "Target Name"
+msgstr "Nombre del Objetivo"
+
+msgid "Configure the workspace for this engagement."
+msgstr "Configura el espacio de trabajo para esta auditoría."
+
+msgid "Target Service"
+msgstr "Servicio Objetivo"
+
+msgid "Target Port"
+msgstr "Puerto Objetivo"
+
+msgid "Command Executed"
+msgstr "Comando Ejecutado"
+
+msgid "Result / Outcome"
+msgstr "Resultado / Desenlace"
+
+msgid "Timeline Order"
+msgstr "Orden en la Línea de Tiempo"
+
+msgid "Found During"
+msgstr "Encontrado Durante"
+
+msgid "Flag Value / Hash"
+msgstr "Valor de la Flag / Hash"
+
+msgid ""
+"Enter the exact flag value. It will be hidden if \"Censor in Report\" is "
+"checked."
+msgstr ""
+"Introduce el valor exacto de la flag. Se ocultará si 'Censurar en el "
+"Informe' está marcado."
+
+msgid "e.g., C:\\Users\\Administrator\\Desktop\\root.txt"
+msgstr "ej., C:\\Users\\Administrator\\Desktop\\root.txt"
+
+msgid "e.g., NT AUTHORITY\\SYSTEM"
+msgstr "ej., NT AUTHORITY\\SYSTEM"
+
+msgid "Commands or steps used to locate/read the flag."
+msgstr "Comandos o pasos usados para localizar/leer la flag."
+
+msgid "Edit Machine"
+msgstr "Editar Máquina"
+
+msgid "Initialize Workspace"
+msgstr "Inicializar Entorno"
+
+msgid "Update Machine"
+msgstr "Actualizar Máquina"
+
+msgid "Edit Evidence"
+msgstr "Editar Evidencia"
+
+msgid "Add Evidence"
+msgstr "Añadir Evidencia"
+
+msgid "Edit Evidence Block"
+msgstr "Editar Bloque de Evidencia"
+
+msgid "Record New Evidence"
+msgstr "Registrar Nueva Evidencia"
+
+msgid "Edit Vulnerability"
+msgstr "Editar Vulnerabilidad"
+
+msgid "Add Vulnerability"
+msgstr "Añadir Vulnerabilidad"
+
+msgid "Register Vulnerability"
+msgstr "Registrar Vulnerabilidad"
+
+msgid "Edit Exploit"
+msgstr "Editar Exploit"
+
+msgid "Add Exploit"
+msgstr "Añadir Exploit"
+
+msgid "Register Exploit"
+msgstr "Registrar Exploit"
+
+msgid "Edit Flag"
+msgstr "Editar Flag"
+
+msgid "Capture Flag"
+msgstr "Capturar Flag"
+
+msgid "Edit Screenshot"
+msgstr "Editar Captura"
+
+msgid "Add Screenshot"
+msgstr "Añadir Captura"
+
+msgid "Vulnerability Title"
+msgstr "Título de la Vulnerabilidad"
+
+msgid "Attach Screenshots (Optional)"
+msgstr "Adjuntar Capturas (Opcional)"
+
+msgid "You can paste images here directly using"
+msgstr "Puedes pegar imágenes aquí directamente usando"
+
+msgid "Affected Service / Component"
+msgstr "Servicio / Componente Afectado"
+
+msgid "Affected Port / Protocol"
+msgstr "Puerto / Protocolo Afectado"
+
+msgid "Evidence / Proof of Concept Snippet"
+msgstr "Fragmento de Evidencia / PoC"
+
+msgid "Sort Order"
+msgstr "Orden de Clasificación"
+
+msgid "Exploit Name / Title"
+msgstr "Nombre / Título del Exploit"
+
+msgid "URL / Reference"
+msgstr "URL / Referencia"
+
+msgid "Link to Identified Vulnerability"
+msgstr "Enlace a Vulnerabilidad Identificada"
+
+msgid ""
+"Optional. Associates this exploit with a previously identified "
+"vulnerability."
+msgstr ""
+"Opcional. Asocia este exploit con una vulnerabilidad identificada "
+"previamente."
+
+msgid "Client / Company Name"
+msgstr "Nombre del Cliente / Empresa"
+
+msgid "URLs, IP ranges, or domains included in this engagement."
+msgstr "URLs, rangos de IP o dominios incluidos en esta auditoría."
+
+msgid "Author / Pentester"
+msgstr "Autor / Pentester"
+
+msgid "Name to appear on the generated report cover."
+msgstr "Nombre que aparecerá en la portada del informe generado."
+
+msgid "No data recorded for this phase."
+msgstr "No hay datos registrados para esta fase."
+
+msgid "Upload Screenshot"
+msgstr "Subir Captura"
+
+msgid "Cancel"
+msgstr "Cancelar"
+
+msgid "Save Evidence"
+msgstr "Guardar Evidencia"
+
+msgid "Save Vulnerability"
+msgstr "Guardar Vulnerabilidad"
+
+msgid "Save Exploit"
+msgstr "Guardar Exploit"
+
+msgid "Save Flag"
+msgstr "Guardar Flag"
+
+msgid "Action Title"
+msgstr "Título de la Acción"
+
+msgid "e.g., \"Full Nmap TCP Port Scan\""
+msgstr "ej., \"Escaneo completo de puertos TCP con Nmap\""
+
+msgid "Raw Output"
+msgstr "Salida Bruta"
+
+msgid "Technical Explanation"
+msgstr "Explicación Técnica"
+
+msgid "Explain the significance of this action and what was discovered."
+msgstr "Explica la importancia de esta acción y qué se descubrió."
+
+msgid "Lower numbers appear first within the phase."
+msgstr "Los números más bajos aparecen primero dentro de la fase."
+
+msgid "Image File"
+msgstr "Archivo de Imagen"
+
+msgid "Supported formats: PNG, JPG, JPEG, WEBP."
+msgstr "Formatos soportados: PNG, JPG, JPEG, WEBP."
+
+msgid "A short, descriptive name for the image."
+msgstr "Un nombre corto y descriptivo para la imagen."
+
+msgid "Caption"
+msgstr "Pie de foto"
+
+msgid "This text will appear beneath the image in the final LaTeX report."
+msgstr ""
+"Este texto aparecerá debajo de la imagen en el informe final en LaTeX."
+
+msgid "Link to specific item"
+msgstr "Enlazar a un elemento específico"
+
+msgid "Optional"
+msgstr "Opcional"
+
+msgid "Gallery Order"
+msgstr "Orden en la Galería"
+
+msgid "Evidence"
+msgstr "Evidencia"
+
+msgid "Exploit"
+msgstr "Exploit"
+
+msgid "Screenshot"
+msgstr "Captura"
+
+msgid "Flag"
+msgstr "Flag"
