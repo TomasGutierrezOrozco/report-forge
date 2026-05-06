@@ -43,6 +43,27 @@ class MachineViewsTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "ViewTestBox")
 
+    def test_professional_machine_detail_hides_ctf_badges(self):
+        machine = Machine.objects.create(
+            name="ClientPortal",
+            platform=Machine.Platform.HTB,
+            difficulty=Machine.Difficulty.EASY,
+            report_type=Machine.ReportType.BUG_BOUNTY,
+            client_name="Acme Corp",
+            target_ip="203.0.113.10",
+        )
+
+        response = self.client.get(
+            reverse("reports:machine_detail", args=[machine.pk])
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Bug Bounty Report")
+        self.assertContains(response, "Acme Corp")
+        self.assertContains(response, "203.0.113.10")
+        self.assertNotContains(response, "HackTheBox")
+        self.assertNotContains(response, "Easy")
+
     def test_machine_create_view_get(self):
         response = self.client.get(reverse("reports:machine_create"))
         self.assertEqual(response.status_code, 200)

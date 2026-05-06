@@ -16,8 +16,14 @@
 \BLOCK{ if machine.client_name }
 \textbf{\VAR{ i18n.client }}       & \VAR{ machine.client_name | escape_tex } \\ \hline
 \BLOCK{ endif }
-\textbf{\VAR{ i18n.platform }}     & \VAR{ machine.display_platform() | escape_tex } \\ \hline
+\BLOCK{ if machine.scope }
+\textbf{\VAR{ i18n.pt_scope }}     & \VAR{ machine.scope | escape_tex } \\ \hline
+\BLOCK{ endif }
+\BLOCK{ if machine.target_ip }
 \textbf{\VAR{ i18n.target_ip }}    & \VAR{ machine.target_ip | escape_tex } \\ \hline
+\BLOCK{ endif }
+\BLOCK{ if machine.author }
 \textbf{\VAR{ i18n.author_label }} & \VAR{ machine.author | escape_tex } \\ \hline
+\BLOCK{ endif }
 \end{tabular}
 \end{table}

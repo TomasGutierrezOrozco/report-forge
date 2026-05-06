@@ -207,6 +207,37 @@ class MarkdownExportTest(TestCase):
             self.assertNotIn("Difficulty: Easy", content)
             self.assertNotIn("[censored]", content)
 
+    def test_professional_markdown_uses_client_scope_instead_of_ctf_fields(self):
+        machine = Machine.objects.create(
+            name="ProfessionalTarget",
+            platform=Machine.Platform.HTB,
+            difficulty=Machine.Difficulty.HARD,
+            operating_system=Machine.OS.LINUX,
+            target_ip="203.0.113.10",
+            author="Consultant",
+            report_language="en",
+            report_type=Machine.ReportType.PENTEST,
+            client_name="Acme Corp",
+            scope="api.acme.test, 203.0.113.0/24",
+        )
+
+        archive_bytes, _ = build_markdown_zip(machine)
+
+        with zipfile.ZipFile(BytesIO(archive_bytes)) as zf:
+            md_files = [n for n in zf.namelist() if n.endswith(".md")]
+            content = zf.read(md_files[0]).decode("utf-8")
+
+            self.assertIn("Client: Acme Corp", content)
+            self.assertIn("Scope of Work: api.acme.test, 203.0.113.0/24", content)
+            self.assertIn("Target IP: `203.0.113.10`", content)
+            self.assertIn("Author: Consultant", content)
+            self.assertNotIn("Platform:", content)
+            self.assertNotIn("Difficulty:", content)
+            self.assertNotIn("Operating System:", content)
+            self.assertNotIn("HackTheBox", content)
+            self.assertNotIn("Hard", content)
+            self.assertNotIn("Linux", content)
+
     def test_spanish_latex_export_translates_choice_values(self):
         with TemporaryDirectory() as export_root:
             with override_settings(EXPORTS_ROOT=export_root):
@@ -259,6 +290,70 @@ class MarkdownExportTest(TestCase):
             self.assertNotIn("Otro", content)
             self.assertNotIn("Easy", content)
             self.assertNotIn("Initial Access", content)
+
+    def test_pentest_latex_uses_client_scope_instead_of_ctf_fields(self):
+        with TemporaryDirectory() as export_root:
+            with override_settings(EXPORTS_ROOT=export_root):
+                machine = Machine.objects.create(
+                    name="PentestTarget",
+                    platform=Machine.Platform.HTB,
+                    difficulty=Machine.Difficulty.HARD,
+                    operating_system=Machine.OS.LINUX,
+                    target_ip="203.0.113.10",
+                    author="Consultant",
+                    report_language="en",
+                    report_type=Machine.ReportType.PENTEST,
+                    client_name="Acme Corp",
+                    scope="api.acme.test, 203.0.113.0/24",
+                )
+
+                _, tex_path = render_machine_to_latex(machine)
+
+                with open(tex_path, encoding="utf-8") as report:
+                    content = report.read()
+
+            self.assertIn("Acme Corp", content)
+            self.assertIn("Scope of Work", content)
+            self.assertIn("api.acme.test, 203.0.113.0/24", content)
+            self.assertIn("203.0.113.10", content)
+            self.assertIn("Consultant", content)
+            self.assertNotIn("Platform", content)
+            self.assertNotIn("Difficulty", content)
+            self.assertNotIn("HackTheBox", content)
+            self.assertNotIn("Hard", content)
+            self.assertNotIn("Linux", content)
+
+    def test_bug_bounty_latex_uses_client_scope_instead_of_ctf_fields(self):
+        with TemporaryDirectory() as export_root:
+            with override_settings(EXPORTS_ROOT=export_root):
+                machine = Machine.objects.create(
+                    name="BugTarget",
+                    platform=Machine.Platform.HTB,
+                    difficulty=Machine.Difficulty.MEDIUM,
+                    operating_system=Machine.OS.WINDOWS,
+                    target_ip="198.51.100.25",
+                    author="Researcher",
+                    report_language="en",
+                    report_type=Machine.ReportType.BUG_BOUNTY,
+                    client_name="Acme Web",
+                    scope="https://app.acme.test",
+                )
+
+                _, tex_path = render_machine_to_latex(machine)
+
+                with open(tex_path, encoding="utf-8") as report:
+                    content = report.read()
+
+            self.assertIn("Acme Web", content)
+            self.assertIn("Scope of Work", content)
+            self.assertIn("https://app.acme.test", content)
+            self.assertIn("198.51.100.25", content)
+            self.assertIn("Researcher", content)
+            self.assertNotIn("Platform", content)
+            self.assertNotIn("Difficulty", content)
+            self.assertNotIn("HackTheBox", content)
+            self.assertNotIn("Medium", content)
+            self.assertNotIn("Windows", content)
 
     def test_notes_phase_at_end(self):
         machine = Machine.objects.create(name="NotesBox")

@@ -80,7 +80,6 @@
     \BLOCK{ if machine.client_name }
     \textbf{\VAR{ i18n.client }:} \VAR{ machine.client_name | escape_tex }\\
     \BLOCK{ endif }
-    \textbf{\VAR{ i18n.platform }:} \VAR{ machine.display_platform() | escape_tex }\\
     \textbf{\VAR{ i18n.author_label }:} \VAR{ machine.author | escape_tex }\\
 \end{center}
 
@@ -88,7 +87,7 @@
 \VAR{ i18n.table_of_contents }
 \newpage
 
-\BLOCK{ if has_machine_description or machine.client_name or machine.platform or machine.author or machine.target_ip }
+\BLOCK{ if has_machine_description or machine.client_name or machine.scope or machine.author or machine.target_ip }
 \BLOCK{ include 'sections/bb_summary.tex.j2' }
 \BLOCK{ endif }
 

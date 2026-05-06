@@ -11,11 +11,21 @@
             {{ machine.name }}
         </h2>
         <div class="d-flex align-items-center gap-3 text-muted mt-2 flex-wrap">
-            <span class="badge" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: 500;">{{ machine.display_platform }}</span>
-            <span class="d-flex align-items-center gap-1">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h4l2-9 5 18 2-9h5"></path></svg>
-                {{ machine.get_difficulty_display }}
-            </span>
+            {% if machine.report_type == 'ctf' %}
+                <span class="badge" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: 500;">{{ machine.display_platform }}</span>
+                <span class="d-flex align-items-center gap-1">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h4l2-9 5 18 2-9h5"></path></svg>
+                    {{ machine.get_difficulty_display }}
+                </span>
+            {% else %}
+                <span class="badge" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-weight: 500;">{{ machine.get_report_type_display }}</span>
+                {% if machine.client_name %}
+                <span class="d-flex align-items-center gap-1">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                    {{ machine.client_name }}
+                </span>
+                {% endif %}
+            {% endif %}
             <span class="d-flex align-items-center gap-1">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
                 <span class="font-monospace text-primary-custom">{{ machine.target_ip|default:"N/A" }}</span>

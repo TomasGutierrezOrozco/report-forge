@@ -88,13 +88,21 @@ def build_markdown_zip(machine):
             lines = []
             _write_line(lines, f"# {machine.name}")
             _write_line(lines)
-            _write_line(lines, f"- {i18n['platform']}: {machine.display_platform()}")
-            _write_line(lines, f"- {i18n['difficulty']}: {machine.get_difficulty_display()}")
-            _write_line(lines, f"- {i18n['operating_system']}: {machine.display_operating_system()}")
+            
+            if machine.report_type == 'ctf':
+                _write_line(lines, f"- {i18n['platform']}: {machine.display_platform()}")
+                _write_line(lines, f"- {i18n['difficulty']}: {machine.get_difficulty_display()}")
+                _write_line(lines, f"- {i18n['operating_system']}: {machine.display_operating_system()}")
+            else:
+                if machine.client_name:
+                    _write_line(lines, f"- {i18n.get('client', 'Client')}: {machine.client_name}")
+                if machine.scope:
+                    _write_line(lines, f"- {i18n.get('pt_scope', 'Scope')}: {machine.scope}")
+
             if machine.target_ip:
                 _write_line(lines, f"- {i18n['target_ip']}: `{machine.target_ip}`")
             if machine.author:
-                _write_line(lines, f"- {i18n['author_label']}: {machine.author}")
+                _write_line(lines, f"- {i18n.get('author_label', 'Author')}: {machine.author}")
             _write_line(lines)
 
             if machine.description:
